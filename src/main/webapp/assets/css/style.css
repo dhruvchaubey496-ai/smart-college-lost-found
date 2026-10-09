@@ -1,4 +1,4 @@
-/* Smart College Lost & Found - Clean White & Light Blue Theme */
+/* Smart College Lost & Found - Enhanced Stylesheet */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,6 +14,13 @@ html, body {
     line-height: 1.5;
 }
 
+/* Subtle Top Rainbow Accent Bar */
+.rainbow-strip {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, #ef4444, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #a855f7);
+}
+
 /* Header & Navigation */
 .navbar {
     background-color: #ffffff;
@@ -24,23 +31,28 @@ html, body {
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .brand {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #0284c7;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
+}
+
+.brand:hover {
+    opacity: 0.85;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
 }
 
 .nav-link {
@@ -48,16 +60,30 @@ html, body {
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 500;
+    transition: color 0.2s ease;
 }
 
 .nav-link:hover {
     color: #0284c7;
 }
 
-/* Buttons */
+/* Mobile Hamburger Toggle */
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #334155;
+}
+
+/* Buttons with Smooth Fade on Hover */
 .btn {
-    display: inline-block;
-    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 18px;
     font-size: 0.92rem;
     font-weight: 600;
     border-radius: 6px;
@@ -65,6 +91,15 @@ html, body {
     cursor: pointer;
     border: 1px solid transparent;
     text-align: center;
+    transition: background-color 0.25s ease, opacity 0.25s ease, transform 0.15s ease;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
 
 .btn-primary {
@@ -85,6 +120,16 @@ html, body {
 
 .btn-secondary:hover {
     background-color: #e0f2fe;
+}
+
+/* Animated Arrow */
+.arrow-anim {
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.btn:hover .arrow-anim {
+    transform: translateX(4px);
 }
 
 /* Layout Container */
@@ -140,11 +185,11 @@ html, body {
     min-width: 220px;
 }
 
-/* Items Grid */
+/* Items Grid & Colored Left Strips */
 .items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 18px;
+    gap: 20px;
 }
 
 .item-card {
@@ -155,6 +200,17 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Colored Left Accent Strips */
+.item-card-found {
+    border-left: 5px solid #0284c7;
+}
+
+.item-card-lost {
+    border-left: 5px solid #ef4444;
 }
 
 .item-badge-found {
@@ -180,7 +236,7 @@ html, body {
 }
 
 .item-title {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 600;
     margin: 8px 0 4px 0;
     color: #0f172a;
@@ -199,13 +255,43 @@ html, body {
     line-height: 1.4;
 }
 
+/* Section Cards */
+.section-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 32px;
+}
+
+.faq-item {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.faq-question {
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+}
+
+.faq-answer {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
 /* Forms */
 .form-card {
-    max-width: 520px;
-    margin: 20px auto;
+    max-width: 540px;
+    margin: 24px auto;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 24px;
+    padding: 28px 24px;
     background-color: #ffffff;
 }
 
@@ -307,18 +393,52 @@ html, body {
 /* Footer */
 .footer {
     border-top: 1px solid #e2e8f0;
-    padding: 20px 16px;
+    padding: 24px 16px;
     text-align: center;
     font-size: 0.88rem;
     color: #64748b;
-    margin-top: 40px;
+    margin-top: 48px;
+    background-color: #ffffff;
 }
 
 .clickable-email {
     color: #0284c7;
     text-decoration: underline;
+    transition: opacity 0.2s ease;
 }
 
 .clickable-email:hover {
-    color: #0369a1;
+    opacity: 0.8;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px;
+        gap: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .filter-bar {
+        flex-direction: column;
+    }
+    .filter-input {
+        min-width: 100%;
+    }
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
 }

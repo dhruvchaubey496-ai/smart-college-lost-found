@@ -76,10 +76,9 @@ public class ItemServlet extends HttpServlet {
 
         boolean ok = itemDAO.addItem(item);
         if (ok) {
-            req.getSession().setAttribute("successMessage", "Item notice published successfully on the board!");
-            resp.sendRedirect("items");
+            resp.sendRedirect("thank-you.jsp");
         } else {
-            req.setAttribute("errorMessage", "Failed to publish notice. Try again.");
+            req.setAttribute("errorMessage", "Failed to publish notice. Please try again.");
             req.getRequestDispatcher("post-item.jsp").forward(req, resp);
         }
     }

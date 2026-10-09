@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List, com.college.lostfound.model.Item, com.college.lostfound.model.User" %>
+<%@ page import="java.util.List, com.college.lostfound.model.Item, com.college.lostfound.model.User, java.time.Year" %>
 <%
     User currentUser = (User) session.getAttribute("user");
     List<Item> items = (List<Item>) request.getAttribute("items");
@@ -10,30 +10,46 @@
     if (successMsg != null) {
         session.removeAttribute("successMessage");
     }
+    int currentYear = Year.now().getValue();
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart College Lost and Found Portal - Secure, classroom-tagged recovery system for students designed by Dhruv Choubey.">
     <title>Smart College Lost &amp; Found Portal</title>
+    <!-- Inline SVG Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M10 2a8 8 0 105.293 14.707l5 5 1.414-1.414-5-5A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z'/></svg>">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+    <!-- Subtle Top Rainbow Accent Bar -->
+    <div class="rainbow-strip"></div>
+
     <!-- Header Navigation -->
     <header class="navbar">
-        <a href="items" class="brand">Campus Lost &amp; Found</a>
-        <nav class="nav-links">
+        <a href="items" class="brand" title="Return to Home">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Campus Lost &amp; Found
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation">&#9776;</button>
+
+        <nav class="nav-links" id="navLinks">
             <a href="items" class="nav-link">Home</a>
+            <a href="#noticeBoard" class="nav-link">Notices</a>
+            <a href="#campusDirections" class="nav-link">Drop-off Desk</a>
+            <a href="#faqSection" class="nav-link">FAQs</a>
             <% if (currentUser != null) { %>
-                <a href="post-item.jsp" class="btn btn-secondary">Report Item</a>
+                <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
                 <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
                 <a href="login.jsp" class="nav-link">Login</a>
-                <a href="register.jsp" class="btn btn-primary">Register</a>
+                <a href="register.jsp" class="btn btn-primary">Register <span class="arrow-anim">&rarr;</span></a>
             <% } %>
         </nav>
     </header>
@@ -43,7 +59,7 @@
             <div class="alert alert-success"><%= successMsg %></div>
         <% } %>
 
-        <!-- Engaging Academic Hero Section -->
+        <!-- Hero Section -->
         <section style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 28px 24px; margin-bottom: 28px;">
             <div style="max-width: 800px;">
                 <span style="font-size: 0.8rem; font-weight: 700; background-color: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;">
@@ -53,7 +69,7 @@
                     Smart College Lost &amp; Found Management System
                 </h1>
                 <p style="font-size: 1rem; color: #475569; line-height: 1.6; margin-bottom: 20px;">
-                    Left your ID card, notebook, or water bottle in a lecture hall or computer lab? Found someone else's item on a desk? 
+                    Left your ID card, notebook, or bottle in a lecture hall or computer lab? Found someone else's item on a desk? 
                     This portal helps students securely locate and return belongings across campus using <strong>anonymous identity-safe coordination</strong>.
                 </p>
 
@@ -75,10 +91,10 @@
 
                 <div>
                     <% if (currentUser == null) { %>
-                        <a href="register.jsp" class="btn btn-primary" style="margin-right: 8px;">Create Account to Post</a>
+                        <a href="register.jsp" class="btn btn-primary" style="margin-right: 8px;">Create Account to Post <span class="arrow-anim">&rarr;</span></a>
                         <a href="#noticeBoard" class="btn btn-secondary">Explore Notice Board</a>
                     <% } else { %>
-                        <a href="post-item.jsp" class="btn btn-primary" style="margin-right: 8px;">+ Report a Found/Lost Item</a>
+                        <a href="post-item.jsp" class="btn btn-primary" style="margin-right: 8px;">+ Report a Found/Lost Item <span class="arrow-anim">&rarr;</span></a>
                         <a href="#noticeBoard" class="btn btn-secondary">View Recent Notices</a>
                     <% } %>
                 </div>
@@ -115,11 +131,11 @@
             <a href="items" class="btn btn-secondary">Reset</a>
         </form>
 
-        <!-- Items Grid -->
+        <!-- Items Grid with Colored Left Strips -->
         <div class="items-grid">
             <% if (items != null && !items.isEmpty()) {
                 for (Item item : items) { %>
-                    <div class="item-card">
+                    <div class="item-card <%= "FOUND".equals(item.getType()) ? "item-card-found" : "item-card-lost" %>">
                         <div>
                             <span class="<%= "FOUND".equals(item.getType()) ? "item-badge-found" : "item-badge-lost" %>">
                                 <%= item.getType() %>
@@ -132,7 +148,9 @@
                         </div>
                         <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 0.85rem; color: #64748b;">By: <strong>@<%= item.getFinderUsername() %></strong></span>
-                            <a href="items?action=view&id=<%= item.getId() %>" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 12px;">View &amp; Claim</a>
+                            <a href="items?action=view&id=<%= item.getId() %>" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+                                View &amp; Claim <span class="arrow-anim">&rarr;</span>
+                            </a>
                         </div>
                     </div>
             <%  } 
@@ -142,20 +160,83 @@
                 </div>
             <% } %>
         </div>
+
+        <!-- Campus Directions & Central Drop-off Desk Section -->
+        <section id="campusDirections" class="section-card">
+            <h3 style="font-size: 1.25rem; color: #0f172a; margin-bottom: 6px;">Campus Drop-off Desk &amp; Directions</h3>
+            <p style="font-size: 0.92rem; color: #64748b; margin-bottom: 16px;">
+                Can't meet the student directly? Deposit the item at our official campus lost &amp; found centers:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+                <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px;">
+                    <strong style="color: #0284c7;">Main Admin Block Desk</strong>
+                    <p style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Ground Floor, Window 3 &bull; Open: 9:00 AM - 5:00 PM</p>
+                </div>
+                <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px;">
+                    <strong style="color: #0284c7;">Central Library Issue Counter</strong>
+                    <p style="font-size: 0.85rem; color: #475569; margin-top: 4px;">1st Floor Library Entrance &bull; Open: 8:00 AM - 8:00 PM</p>
+                </div>
+                <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px;">
+                    <strong style="color: #0284c7;">Security Guard Gate 1</strong>
+                    <p style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Campus Main Entrance &bull; Available 24/7 for valuable items</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Frequently Asked Questions (FAQs) -->
+        <section id="faqSection" class="section-card">
+            <h3 style="font-size: 1.25rem; color: #0f172a; margin-bottom: 12px;">Frequently Asked Questions (FAQs)</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question">How does the anonymous chat protect my identity?</div>
+                <div class="faq-answer">
+                    When you chat, only your chosen public username is shown. Your personal college email, phone number, and student roll number remain completely hidden in the database.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What should I do if I find someone's lost ID Card or valuable?</div>
+                <div class="faq-answer">
+                    Click "Report Item", select the classroom where you found it, write a short description without sharing sensitive card numbers, and coordinate handoff with the owner via anonymous chat.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is this system free for all students?</div>
+                <div class="faq-answer">
+                    Yes, 100% free community initiative built specifically for campus students.
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Professional Footer with Dhruv Choubey Credits -->
+    <!-- Professional Footer with Dynamic Year & Dhruv Choubey Attribution -->
     <footer class="footer">
         <p style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">
-            Smart College Lost &amp; Found Management System
+            Smart College Lost &amp; Found Management System &bull; &copy; <%= currentYear %>
         </p>
         <p style="margin-bottom: 8px;">
             Designed &amp; Developed by <strong>Dhruv Choubey</strong>
         </p>
+        <div style="font-size: 0.85rem; margin-bottom: 8px;">
+            <a href="items" style="color: #0284c7; text-decoration: none; margin: 0 8px;">Home</a> &bull;
+            <a href="#campusDirections" style="color: #0284c7; text-decoration: none; margin: 0 8px;">Campus Desks</a> &bull;
+            <a href="#faqSection" style="color: #0284c7; text-decoration: none; margin: 0 8px;">FAQs</a>
+        </div>
         <p style="font-size: 0.82rem;">
-            Questions or suggestions? Contact: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a>
+            Questions or support? Reach out at: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a>
         </p>
     </footer>
 
+    <!-- Mobile Menu Interactivity Script -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        if (mobileMenuBtn && navLinks) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
 </body>
 </html>
