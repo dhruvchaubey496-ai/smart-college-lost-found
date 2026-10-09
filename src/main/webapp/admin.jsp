@@ -294,7 +294,16 @@
                             <tr>
                                 <td><strong>#<%= m.getItemId() %></strong></td>
                                 <td><strong>@<%= m.getSenderUsername() %></strong></td>
-                                <td style="max-width: 380px;"><%= m.getContent() %></td>
+                                <td style="max-width: 380px;">
+                                    <% if (m.getContent() != null && m.getContent().startsWith("[IMAGE]")) { %>
+                                        <a href="<%= m.getContent().substring(7) %>" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: #0284c7; font-weight: 600;">
+                                            <img src="<%= m.getContent().substring(7) %>" alt="Photo" style="max-height: 40px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                                            <span>📷 [Attached Photo Verification]</span>
+                                        </a>
+                                    <% } else { %>
+                                        <%= m.getContent() %>
+                                    <% } %>
+                                </td>
                                 <td style="font-size: 0.8rem; color: #64748b;"><%= m.getSentAt() %></td>
                                 <td>
                                     <a href="chat?itemId=<%= m.getItemId() %>&partnerId=0" class="btn btn-secondary" style="font-size: 0.78rem; padding: 3px 8px;">

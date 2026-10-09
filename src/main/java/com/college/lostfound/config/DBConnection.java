@@ -19,6 +19,11 @@ public class DBConnection {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+                 java.sql.Statement st = conn.createStatement()) {
+                st.execute("ALTER TABLE messages MODIFY COLUMN content MEDIUMTEXT");
+            } catch (Exception ignored) {
+            }
         } catch (ClassNotFoundException e) {
             System.err.println("MySQL Driver not found: " + e.getMessage());
         }
