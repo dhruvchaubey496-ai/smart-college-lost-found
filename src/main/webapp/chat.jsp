@@ -2,8 +2,10 @@
 <%@ page import="com.college.lostfound.model.Item, com.college.lostfound.model.User, java.time.Year" %>
 <%
     Item item = (Item) request.getAttribute("item");
-    int partnerId = (Integer) request.getAttribute("partnerId");
+    Object partnerIdObj = request.getAttribute("partnerId");
+    int partnerId = (partnerIdObj != null) ? (Integer) partnerIdObj : 0;
     String partnerUsername = (String) request.getAttribute("partnerUsername");
+    if (partnerUsername == null) partnerUsername = "Student";
     User currentUser = (User) session.getAttribute("user");
     int currentYear = Year.now().getValue();
 %>
@@ -24,9 +26,15 @@
         <a href="items" class="brand">Campus Lost &amp; Found</a>
         <nav class="nav-links">
             <a href="items" class="nav-link">Home</a>
-            <a href="items?action=view&id=<%= item.getId() %>" class="nav-link">&larr; Back to Item</a>
-            <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
-            <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
+            <% if (item != null) { %>
+                <a href="items?action=view&id=<%= item.getId() %>" class="nav-link">&larr; Back to Item</a>
+            <% } else { %>
+                <a href="items" class="nav-link">&larr; Back to Notice Board</a>
+            <% } %>
+            <% if (currentUser != null) { %>
+                <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
+                <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
+            <% } %>
         </nav>
     </header>
 
@@ -35,7 +43,9 @@
             <div class="chat-header">
                 <div>
                     <h3>Chat with @<%= partnerUsername %></h3>
-                    <span style="font-size: 0.8rem; color: #64748b;">Regarding: <%= item.getTitle() %> (<%= item.getClassroom() %>)</span>
+                    <% if (item != null) { %>
+                        <span style="font-size: 0.8rem; color: #64748b;">Regarding: <%= item.getTitle() %> (<%= item.getClassroom() %>)</span>
+                    <% } %>
                 </div>
                 <span style="font-size: 0.8rem; background-color: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; font-weight: 600;">Identity Protected</span>
             </div>
@@ -49,7 +59,7 @@
 
             <!-- Input Bar -->
             <form id="chatForm" class="chat-input-bar">
-                <input type="text" id="messageInput" class="form-control" placeholder="Type message to verify details (e.g. colour, brand, unique mark)..." required autocomplete="off">
+                <input type="text" id="messageInput" class="form-control" placeholder="Type message to coordinate safely without revealing personal credentials..." required autocomplete="off">
                 <button type="submit" id="sendBtn" class="btn btn-primary">Send</button>
             </form>
         </div>
@@ -62,15 +72,16 @@
     </footer>
 
     <script>
-        const itemId = <%= item.getId() %>;
+        const itemId = <%= item != null ? item.getId() : 0 %>;
         const partnerId = <%= partnerId %>;
-        const currentUserId = <%= currentUser.getId() %>;
+        const currentUserId = <%= currentUser != null ? currentUser.getId() : 0 %>;
         const chatMessages = document.getElementById("chatMessages");
         const chatForm = document.getElementById("chatForm");
         const messageInput = document.getElementById("messageInput");
         const sendBtn = document.getElementById("sendBtn");
 
         async function fetchMessages() {
+            if (!itemId || !partnerId) return;
             try {
                 const res = await fetch(`chat?itemId=${itemId}&partnerId=${partnerId}&format=json`);
                 if (res.ok) {

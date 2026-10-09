@@ -33,10 +33,12 @@ public class ItemServlet extends HttpServlet {
                         req.setAttribute("chatPartners", partners);
                     }
 
-                    req.getRequestDispatcher("item-details.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/item-details.jsp").forward(req, resp);
                     return;
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             resp.sendRedirect("items");
             return;
         }
@@ -51,7 +53,7 @@ public class ItemServlet extends HttpServlet {
         req.setAttribute("keyword", keyword != null ? keyword : "");
         req.setAttribute("selectedCategory", category != null ? category : "ALL");
         req.setAttribute("selectedType", type != null ? type : "ALL");
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        req.getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class ItemServlet extends HttpServlet {
 
         if (title == null || classroom == null || description == null || title.trim().isEmpty()) {
             req.setAttribute("errorMessage", "Title, Classroom, and Description are required.");
-            req.getRequestDispatcher("post-item.jsp").forward(req, resp);
+            req.getRequestDispatcher("/post-item.jsp").forward(req, resp);
             return;
         }
 
@@ -89,7 +91,7 @@ public class ItemServlet extends HttpServlet {
             resp.sendRedirect("thank-you.jsp");
         } else {
             req.setAttribute("errorMessage", "Failed to publish notice. Please try again.");
-            req.getRequestDispatcher("post-item.jsp").forward(req, resp);
+            req.getRequestDispatcher("/post-item.jsp").forward(req, resp);
         }
     }
 }

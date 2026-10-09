@@ -31,8 +31,16 @@ public class ChatServlet extends HttpServlet {
         }
 
         try {
-            int itemId = Integer.parseInt(req.getParameter("itemId"));
-            int partnerId = Integer.parseInt(req.getParameter("partnerId"));
+            String itemIdParam = req.getParameter("itemId");
+            String partnerIdParam = req.getParameter("partnerId");
+
+            if (itemIdParam == null || partnerIdParam == null) {
+                resp.sendRedirect("items");
+                return;
+            }
+
+            int itemId = Integer.parseInt(itemIdParam);
+            int partnerId = Integer.parseInt(partnerIdParam);
             String format = req.getParameter("format");
 
             if ("json".equals(format)) {
@@ -44,13 +52,21 @@ public class ChatServlet extends HttpServlet {
             }
 
             Item item = itemDAO.getItemById(itemId);
+            if (item == null) {
+                resp.sendRedirect("items");
+                return;
+            }
+
             String partnerUsername = userDAO.getUsernameById(partnerId);
 
             req.setAttribute("item", item);
             req.setAttribute("partnerId", partnerId);
             req.setAttribute("partnerUsername", partnerUsername);
-            req.getRequestDispatcher("chat.jsp").forward(req, resp);
+
+            // MUST use leading "/" for root context dispatcher in Tomcat
+            req.getRequestDispatcher("/chat.jsp").forward(req, resp);
         } catch (Exception e) {
+            e.printStackTrace();
             resp.sendRedirect("items");
         }
     }
@@ -77,6 +93,7 @@ public class ChatServlet extends HttpServlet {
             resp.setContentType("application/json");
             resp.getWriter().write("{\"status\":\"ok\"}");
         } catch (Exception e) {
+            e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
