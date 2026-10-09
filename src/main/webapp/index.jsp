@@ -43,7 +43,11 @@
             <a href="#noticeBoard" class="nav-link">Notices</a>
             <a href="#campusDirections" class="nav-link">Drop-off Desk</a>
             <a href="#faqSection" class="nav-link">FAQs</a>
+
             <% if (currentUser != null) { %>
+                <% if (currentUser.isAdmin()) { %>
+                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a;">Dept Admin Portal</a>
+                <% } %>
                 <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
                 <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
@@ -221,7 +225,8 @@
         <div style="font-size: 0.85rem; margin-bottom: 8px;">
             <a href="items" style="color: #0284c7; text-decoration: none; margin: 0 8px;">Home</a> &bull;
             <a href="#campusDirections" style="color: #0284c7; text-decoration: none; margin: 0 8px;">Campus Desks</a> &bull;
-            <a href="#faqSection" style="color: #0284c7; text-decoration: none; margin: 0 8px;">FAQs</a>
+            <a href="#faqSection" style="color: #0284c7; text-decoration: none; margin: 0 8px;">FAQs</a> &bull;
+            <a href="admin" style="color: #64748b; text-decoration: none; margin: 0 8px;">Department Desk Portal</a>
         </div>
         <p style="font-size: 0.82rem;">
             Questions or support? Reach out at: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a>

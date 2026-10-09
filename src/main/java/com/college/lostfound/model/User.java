@@ -5,12 +5,20 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String role = "STUDENT"; // STUDENT or ADMIN
 
     public User() {}
     public User(int id, String username, String email) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.role = "admin".equalsIgnoreCase(username) ? "ADMIN" : "STUDENT";
+    }
+    public User(int id, String username, String email, String role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.role = (role != null) ? role : ("admin".equalsIgnoreCase(username) ? "ADMIN" : "STUDENT");
     }
 
     public int getId() { return id; }
@@ -24,4 +32,11 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public boolean isAdmin() {
+        return "ADMIN".equalsIgnoreCase(role) || "admin".equalsIgnoreCase(username);
+    }
 }

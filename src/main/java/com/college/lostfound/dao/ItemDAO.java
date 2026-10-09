@@ -78,6 +78,57 @@ public class ItemDAO {
         return list;
     }
 
+    public List<Item> getAllItemsForAdmin() {
+        List<Item> list = new ArrayList<>();
+        String sql = "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id ORDER BY i.created_at DESC";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id"));
+                item.setTitle(rs.getString("title"));
+                item.setCategory(rs.getString("category"));
+                item.setType(rs.getString("type"));
+                item.setClassroom(rs.getString("classroom"));
+                item.setDescription(rs.getString("description"));
+                item.setUserId(rs.getInt("user_id"));
+                item.setFinderUsername(rs.getString("username"));
+                item.setStatus(rs.getString("status"));
+                item.setCreatedAt(rs.getTimestamp("created_at"));
+                list.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean updateItemStatus(int id, String status) {
+        String sql = "UPDATE items SET status = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteItem(int id) {
+        String sql = "DELETE FROM items WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public Item getItemById(int id) {
         String sql = "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id WHERE i.id = ?";
         try (Connection conn = DBConnection.getConnection();
