@@ -124,7 +124,7 @@
             if (!currentItemId) return;
             try {
                 var url = "chat?itemId=" + currentItemId + "&partnerId=" + currentPartnerId + "&format=json";
-                var res = await fetch(url);
+                var res = await fetch(url, { credentials: "same-origin" });
                 if (res.ok) {
                     var data = await res.json();
                     renderMessages(data);
@@ -177,22 +177,27 @@
                 var formData = new URLSearchParams();
                 formData.append("itemId", currentItemId);
                 formData.append("partnerId", currentPartnerId);
+                formData.append("senderId", myUserId);
                 formData.append("message", text);
 
                 messageInput.value = "";
-                var response = await fetch("chat", {
+                var postUrl = window.location.pathname; // Always points accurately to /chat
+                var response = await fetch(postUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    credentials: "same-origin",
                     body: formData.toString()
                 });
 
                 if (response.ok) {
                     await fetchMessages();
                 } else {
-                    alert("Could not deliver message. Please check connection.");
+                    var errorMsg = await response.text();
+                    alert("Message error: " + (errorMsg || "Delivery failed."));
                 }
             } catch (err) {
                 console.error("Error sending message:", err);
+                alert("Network communication error: " + err.message);
             } finally {
                 sendBtn.disabled = false;
                 messageInput.focus();

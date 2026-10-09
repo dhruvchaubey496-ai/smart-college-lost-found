@@ -46,7 +46,6 @@ public class ChatServlet extends HttpServlet {
             if ("json".equals(format)) {
                 List<Message> list;
                 if (currentUser.isAdmin() && partnerId == 0) {
-                    // Admin inspecting all item communications
                     list = chatDAO.getAllMessagesForItem(itemId);
                 } else {
                     list = chatDAO.getChatHistory(itemId, currentUser.getId(), partnerId);
@@ -88,8 +87,23 @@ public class ChatServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
 
-        if (currentUser == null) {
+        int senderId = 0;
+        if (currentUser != null) {
+            senderId = currentUser.getId();
+        } else {
+            // Fallback if mobile browser drops cookie during AJAX request
+            String senderIdStr = req.getParameter("senderId");
+            if (senderIdStr != null && !senderIdStr.isEmpty()) {
+                try {
+                    senderId = Integer.parseInt(senderIdStr);
+                } catch (Exception ex) {}
+            }
+        }
+
+        if (senderId <= 0) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.setContentType("text/plain");
+            resp.getWriter().write("Session expired. Please refresh and log in.");
             return;
         }
 
@@ -99,7 +113,13 @@ public class ChatServlet extends HttpServlet {
             String message = req.getParameter("message");
 
             if (message != null && !message.trim().isEmpty()) {
-                chatDAO.saveMessage(itemId, currentUser.getId(), partnerId, message.trim());
+                boolean saved = chatDAO.saveMessage(itemId, senderId, partnerId, message.trim());
+                if (!saved) {
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    resp.setContentType("text/plain");
+                    resp.getWriter().write("Failed to save message in database.");
+                    return;
+                }
             }
 
             resp.setContentType("application/json");
@@ -107,6 +127,8 @@ public class ChatServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setContentType("text/plain");
+            resp.getWriter().write("Error: " + e.getMessage());
         }
     }
 }
