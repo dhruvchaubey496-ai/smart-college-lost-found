@@ -4,6 +4,7 @@
     String successMsg = (String) session.getAttribute("successMessage");
     if (successMsg != null) session.removeAttribute("successMessage");
     String adminRequired = request.getParameter("adminRequired");
+    String loginRequired = request.getParameter("loginRequired");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +38,10 @@
                     Login to post notices, chat anonymously, or access department management.
                 </p>
             </div>
+
+            <% if (loginRequired != null) { %>
+                <div class="alert alert-error">Please login or register to access the anonymous chat room.</div>
+            <% } %>
 
             <% if (adminRequired != null) { %>
                 <div class="alert alert-error">Officer authentication required to access Department Desk.</div>

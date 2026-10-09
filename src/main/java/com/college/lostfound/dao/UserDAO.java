@@ -20,21 +20,53 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            // Ignore if table/constraint handled
+            // Ignore
         }
     }
 
-    public boolean registerUser(String username, String email, String password) {
+    public String registerUser(String username, String email, String password) {
+        if (username == null || username.trim().isEmpty() || email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            return "All fields are required.";
+        }
+        username = username.trim();
+        email = email.trim();
+
+        // Check if username already exists
+        String checkUserSql = "SELECT id FROM users WHERE username = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(checkUserSql)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return "Username @" + username + " is already taken. Please choose a different username (e.g. " + username + "99).";
+            }
+        } catch (SQLException e) {
+            return "Connection check error: " + e.getMessage();
+        }
+
+        // Check if email already exists
+        String checkEmailSql = "SELECT id FROM users WHERE email = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(checkEmailSql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return "Email " + email + " is already registered! Please sign in or use a different email.";
+            }
+        } catch (SQLException e) {
+            return "Connection check error: " + e.getMessage();
+        }
+
+        // Insert new user
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, email);
             ps.setString(3, password);
-            return ps.executeUpdate() > 0;
+            return ps.executeUpdate() > 0 ? "SUCCESS" : "Registration could not be completed. Try again.";
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            return "Registration error: " + e.getMessage();
         }
     }
 
@@ -93,6 +125,6 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "Unknown";
+        return "Student";
     }
 }

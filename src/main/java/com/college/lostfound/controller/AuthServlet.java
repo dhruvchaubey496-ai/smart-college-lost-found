@@ -20,19 +20,13 @@ public class AuthServlet extends HttpServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-            if (username == null || email == null || password == null || username.trim().isEmpty()) {
-                req.setAttribute("errorMessage", "All fields are required.");
-                req.getRequestDispatcher("register.jsp").forward(req, resp);
-                return;
-            }
-
-            boolean registered = userDAO.registerUser(username.trim(), email.trim(), password);
-            if (registered) {
-                req.getSession().setAttribute("successMessage", "Account created successfully. Please login.");
+            String result = userDAO.registerUser(username, email, password);
+            if ("SUCCESS".equals(result)) {
+                req.getSession().setAttribute("successMessage", "Account created successfully for @" + username.trim() + "! Please login.");
                 resp.sendRedirect("login.jsp");
             } else {
-                req.setAttribute("errorMessage", "Username or Email already registered.");
-                req.getRequestDispatcher("register.jsp").forward(req, resp);
+                req.setAttribute("errorMessage", result);
+                req.getRequestDispatcher("/register.jsp").forward(req, resp);
             }
         } else if ("login".equals(action)) {
             String identifier = req.getParameter("identifier");
@@ -45,8 +39,8 @@ public class AuthServlet extends HttpServlet {
                 session.setAttribute("successMessage", "Welcome back, @" + user.getUsername() + "!");
                 resp.sendRedirect("items");
             } else {
-                req.setAttribute("errorMessage", "Invalid Username/Email or Password.");
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
+                req.setAttribute("errorMessage", "Invalid Username/Email or Password. Try again.");
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
             }
         }
     }
