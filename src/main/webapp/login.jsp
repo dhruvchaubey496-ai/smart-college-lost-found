@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student &amp; Staff Login - Smart College Lost &amp; Found</title>
+    <title>Student Login - Findr | by Dhruv Choubey</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M10 2a8 8 0 105.293 14.707l5 5 1.414-1.414-5-5A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z'/></svg>">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -20,7 +20,15 @@
     <div class="rainbow-strip"></div>
 
     <header class="navbar">
-        <a href="items" class="brand">Campus Lost &amp; Found</a>
+        <a href="items" class="brand" title="Findr - Campus Lost &amp; Found">
+            <span class="brand-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
+            <div class="brand-text">
+                <span class="brand-name">Findr</span>
+                <span class="brand-byline">by Dhruv Choubey</span>
+            </div>
+        </a>
         <nav class="nav-links">
             <a href="items" class="nav-link">Home</a>
             <a href="register.jsp" class="btn btn-secondary">Register</a>

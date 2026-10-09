@@ -18,6 +18,8 @@
     if (adminError != null) session.removeAttribute("adminError");
 
     int currentYear = Year.now().getValue();
+    int helpdeskItemId = (request.getAttribute("helpdeskItemId") != null) ? (Integer) request.getAttribute("helpdeskItemId") : 1;
+    int adminId = (request.getAttribute("adminId") != null) ? (Integer) request.getAttribute("adminId") : 1;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,9 +95,14 @@
     <div class="rainbow-strip"></div>
 
     <header class="navbar">
-        <a href="items" class="brand">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            Campus Lost &amp; Found Authority Desk
+        <a href="items" class="brand" title="Findr - Campus Lost &amp; Found">
+            <span class="brand-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
+            <div class="brand-text">
+                <span class="brand-name">Findr</span>
+                <span class="brand-byline">by Dhruv Choubey</span>
+            </div>
         </a>
         <nav class="nav-links">
             <a href="items" class="nav-link">&larr; Public Board</a>
@@ -271,8 +278,22 @@
             </table>
         </div>
 
+        <!-- Dedicated Student Helpdesk Inquiries Box -->
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: 12px; padding: 22px 24px; margin-top: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <span style="font-size: 0.74rem; font-weight: 700; background: #2563eb; color: #ffffff; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Direct Officer Line</span>
+                <h3 style="font-size: 1.25rem; color: #1e3a8a; margin: 6px 0 4px 0;">🎧 Student Support &amp; Helpdesk Chat Room</h3>
+                <p style="font-size: 0.9rem; color: #1e40af; margin: 0;">Students who click "Contact Admin" send messages to this official department channel.</p>
+            </div>
+            <div>
+                <a href="chat?itemId=<%= helpdeskItemId %>&partnerId=0" class="btn btn-primary" style="background: #2563eb; border-color: #1d4ed8;">
+                    Open Central Helpdesk Thread &rarr;
+                </a>
+            </div>
+        </div>
+
         <!-- Section 2: Chat & Communications Oversight -->
-        <div style="margin-bottom: 12px; margin-top: 32px;">
+        <div style="margin-bottom: 12px; margin-top: 28px;">
             <h2 style="font-size: 1.25rem; color: #0f172a;">💬 Campus Communications Oversight (Recent Chats)</h2>
             <p style="font-size: 0.88rem; color: #64748b;">Direct transcript access to student messages to monitor dispute resolutions and prevent campus abuse.</p>
         </div>
@@ -285,14 +306,21 @@
                         <th>Sender Student</th>
                         <th>Message Content</th>
                         <th>Timestamp</th>
-                        <th>Investigation Link</th>
+                        <th>Investigation / Reply</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% if (recentMessages != null && !recentMessages.isEmpty()) {
-                        for (Message m : recentMessages) { %>
-                            <tr>
-                                <td><strong>#<%= m.getItemId() %></strong></td>
+                        for (Message m : recentMessages) { 
+                            boolean isHelpdesk = (m.getItemId() == helpdeskItemId);
+                        %>
+                            <tr style="<%= isHelpdesk ? "background-color: #f0fdf4;" : "" %>">
+                                <td>
+                                    <strong>#<%= m.getItemId() %></strong>
+                                    <% if (isHelpdesk) { %>
+                                        <span style="background-color: #dcfce7; color: #15803d; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; display: block; margin-top: 3px;">HELP DESK</span>
+                                    <% } %>
+                                </td>
                                 <td><strong>@<%= m.getSenderUsername() %></strong></td>
                                 <td style="max-width: 380px;">
                                     <% if (m.getContent() != null && m.getContent().startsWith("[IMAGE]")) { %>
@@ -306,9 +334,15 @@
                                 </td>
                                 <td style="font-size: 0.8rem; color: #64748b;"><%= m.getSentAt() %></td>
                                 <td>
-                                    <a href="chat?itemId=<%= m.getItemId() %>&partnerId=0" class="btn btn-secondary" style="font-size: 0.78rem; padding: 3px 8px;">
-                                        Open Thread &rarr;
-                                    </a>
+                                    <% if (isHelpdesk) { %>
+                                        <a href="chat?itemId=<%= m.getItemId() %>&partnerId=<%= m.getSenderId() %>" class="btn btn-primary" style="font-size: 0.78rem; padding: 4px 10px;">
+                                            Reply to @<%= m.getSenderUsername() %> &rarr;
+                                        </a>
+                                    <% } else { %>
+                                        <a href="chat?itemId=<%= m.getItemId() %>&partnerId=0" class="btn btn-secondary" style="font-size: 0.78rem; padding: 3px 8px;">
+                                            Open Thread &rarr;
+                                        </a>
+                                    <% } %>
                                 </td>
                             </tr>
                     <%  }

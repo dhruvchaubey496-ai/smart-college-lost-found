@@ -8,7 +8,7 @@ import java.util.List;
 
 public class UserDAO {
     // Ensures default admin exists
-    private void ensureAdminExists() {
+    public void ensureAdminExists() {
         String checkSql = "SELECT id FROM users WHERE username = 'admin'";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(checkSql)) {
@@ -22,6 +22,21 @@ public class UserDAO {
         } catch (SQLException e) {
             // Ignore
         }
+    }
+
+    public int getAdminUserId() {
+        ensureAdminExists();
+        String sql = "SELECT id FROM users WHERE username = 'admin'";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 
     public String registerUser(String username, String email, String password) {

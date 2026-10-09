@@ -17,8 +17,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Smart College Lost and Found Portal - Secure, classroom-tagged recovery system for students designed by Dhruv Choubey.">
-    <title>Smart College Lost &amp; Found Portal</title>
+    <meta name="description" content="Findr - Smart College Lost and Found Portal by Dhruv Choubey. Secure, classroom-tagged recovery and peer coordination system.">
+    <title>Findr - Campus Lost &amp; Found | by Dhruv Choubey</title>
     <!-- Inline SVG Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M10 2a8 8 0 105.293 14.707l5 5 1.414-1.414-5-5A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z'/></svg>">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -30,11 +30,14 @@
 
     <!-- Header Navigation -->
     <header class="navbar">
-        <a href="items" class="brand" title="Return to Home">
+        <a href="items" class="brand" title="Findr - Campus Lost &amp; Found">
             <span class="brand-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </span>
-            <span>Campus Lost &amp; Found</span>
+            <div class="brand-text">
+                <span class="brand-name">Findr</span>
+                <span class="brand-byline">by Dhruv Choubey</span>
+            </div>
         </a>
 
         <!-- Mobile Menu Toggle Button -->
@@ -51,7 +54,8 @@
                     <a href="admin" class="btn" style="background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a;">Dept Admin Portal</a>
                 <% } %>
                 <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
-                <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
+                <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+                <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
                 <a href="login.jsp" class="nav-link">Login</a>
@@ -102,7 +106,8 @@
                         <a href="#noticeBoard" class="btn btn-secondary">Explore Live Board</a>
                     <% } else { %>
                         <a href="post-item.jsp" class="btn btn-primary">+ Report Found or Lost Item <span class="arrow-anim">&rarr;</span></a>
-                        <a href="#noticeBoard" class="btn btn-secondary">View Live Notices</a>
+                        <a href="chat?adminSupport=true" class="btn btn-secondary">💬 Chat with Admin</a>
+                        <a href="#noticeBoard" class="btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: #475569;">View Live Notices</a>
                     <% } %>
                 </div>
             </div>

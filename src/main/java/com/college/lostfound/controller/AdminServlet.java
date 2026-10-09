@@ -88,6 +88,9 @@ public class AdminServlet extends HttpServlet {
             }
         }
 
+        int adminId = userDAO.getAdminUserId();
+        int helpdeskItemId = itemDAO.getOrCreateAdminHelpdeskItemId(adminId);
+
         req.setAttribute("allItems", allItems);
         req.setAttribute("allUsers", allUsers);
         req.setAttribute("recentMessages", recentMessages);
@@ -96,6 +99,8 @@ public class AdminServlet extends HttpServlet {
         req.setAttribute("resolvedItems", resolvedItems);
         req.setAttribute("totalUsers", allUsers.size());
         req.setAttribute("totalMessages", recentMessages.size());
+        req.setAttribute("helpdeskItemId", helpdeskItemId);
+        req.setAttribute("adminId", adminId);
 
         req.getRequestDispatcher("/admin.jsp").forward(req, resp);
     }

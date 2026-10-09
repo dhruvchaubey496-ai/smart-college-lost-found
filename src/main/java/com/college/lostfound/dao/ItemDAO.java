@@ -154,4 +154,37 @@ public class ItemDAO {
         }
         return null;
     }
+
+    public int getOrCreateAdminHelpdeskItemId(int adminUserId) {
+        String selectSql = "SELECT id FROM items WHERE title = 'Campus Central Admin Helpdesk' AND user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(selectSql)) {
+            ps.setInt(1, adminUserId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        String insertSql = "INSERT INTO items (title, category, type, classroom, description, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, "Campus Central Admin Helpdesk");
+            ps.setString(2, "Other");
+            ps.setString(3, "FOUND");
+            ps.setString(4, "Admin Block - Gate 1 Security Desk");
+            ps.setString(5, "Official direct communication channel for student inquiries, reporting campus lost/found disputes, and reaching administration.");
+            ps.setInt(6, adminUserId);
+            ps.executeUpdate();
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
 }

@@ -82,11 +82,39 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-    border-radius: 8px;
+    border-radius: 9px;
     color: var(--primary);
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.brand-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+}
+
+.brand-byline {
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 1px;
 }
 
 .nav-links {

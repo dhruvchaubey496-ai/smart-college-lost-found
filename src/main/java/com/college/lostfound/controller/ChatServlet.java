@@ -31,6 +31,14 @@ public class ChatServlet extends HttpServlet {
         }
 
         try {
+            String adminSupport = req.getParameter("adminSupport");
+            if ("true".equalsIgnoreCase(adminSupport)) {
+                int adminId = userDAO.getAdminUserId();
+                int helpdeskItemId = itemDAO.getOrCreateAdminHelpdeskItemId(adminId);
+                resp.sendRedirect("chat?itemId=" + helpdeskItemId + "&partnerId=" + adminId);
+                return;
+            }
+
             String itemIdParam = req.getParameter("itemId");
             String partnerIdParam = req.getParameter("partnerId");
 
