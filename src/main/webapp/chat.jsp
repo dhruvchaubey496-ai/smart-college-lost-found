@@ -72,20 +72,27 @@
     </footer>
 
     <script>
-        const itemId = <%= item != null ? item.getId() : 0 %>;
-        const partnerId = <%= partnerId %>;
-        const currentUserId = <%= currentUser != null ? currentUser.getId() : 0 %>;
-        const chatMessages = document.getElementById("chatMessages");
-        const chatForm = document.getElementById("chatForm");
-        const messageInput = document.getElementById("messageInput");
-        const sendBtn = document.getElementById("sendBtn");
+        var currentItemId = <%= item != null ? item.getId() : 0 %>;
+        var currentPartnerId = <%= partnerId %>;
+        var myUserId = <%= currentUser != null ? currentUser.getId() : 0 %>;
+        var chatMessages = document.getElementById("chatMessages");
+        var chatForm = document.getElementById("chatForm");
+        var messageInput = document.getElementById("messageInput");
+        var sendBtn = document.getElementById("sendBtn");
+
+        function escapeHtml(text) {
+            if (!text) return "";
+            var div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
         async function fetchMessages() {
-            if (!itemId || !partnerId) return;
+            if (!currentItemId || !currentPartnerId) return;
             try {
-                const res = await fetch(`chat?itemId=${itemId}&partnerId=${partnerId}&format=json`);
+                var res = await fetch("chat?itemId=" + currentItemId + "&partnerId=" + currentPartnerId + "&format=json");
                 if (res.ok) {
-                    const data = await res.json();
+                    var data = await res.json();
                     renderMessages(data);
                 }
             } catch (err) {
@@ -95,57 +102,51 @@
 
         function renderMessages(messages) {
             if (!messages || messages.length === 0) {
-                chatMessages.innerHTML = `
-                    <div style="text-align: center; color: #64748b; font-size: 0.9rem; padding: 30px;">
-                        No messages yet in this thread.<br>
-                        <span style="font-size: 0.82rem; color: #94a3b8;">Send a message below to start identity-safe coordination!</span>
-                    </div>
-                `;
+                chatMessages.innerHTML = '<div style="text-align:center;color:#64748b;font-size:0.9rem;padding:30px;">'
+                    + 'No messages yet in this thread.<br>'
+                    + '<span style="font-size:0.82rem;color:#94a3b8;">Send a message below to start identity-safe coordination!</span>'
+                    + '</div>';
                 return;
             }
 
-            const isNearBottom = chatMessages.scrollHeight - chatMessages.scrollTop <= chatMessages.clientHeight + 60;
+            var isNearBottom = chatMessages.scrollHeight - chatMessages.scrollTop <= chatMessages.clientHeight + 60;
             chatMessages.innerHTML = "";
 
-            messages.forEach(msg => {
-                const isMe = msg.senderId === currentUserId;
-                const bubble = document.createElement("div");
+            for (var i = 0; i < messages.length; i++) {
+                var msg = messages[i];
+                var isMe = (msg.senderId === myUserId);
+                var bubble = document.createElement("div");
                 bubble.className = "chat-bubble " + (isMe ? "chat-bubble-me" : "chat-bubble-partner");
-                bubble.innerHTML = `
-                    <div class="chat-sender-name">${isMe ? "You" : "@" + msg.senderUsername}</div>
-                    <div>${escapeHtml(msg.content)}</div>
-                    <div style="font-size: 0.68rem; opacity: 0.75; text-align: right; margin-top: 3px;">
-                        ${msg.sentAt ? msg.sentAt.substring(11, 16) : ""}
-                    </div>
-                `;
+
+                var senderLabel = isMe ? "You" : "@" + msg.senderUsername;
+                var timeLabel = msg.sentAt && msg.sentAt.length >= 16 ? msg.sentAt.substring(11, 16) : "";
+
+                bubble.innerHTML = '<div class="chat-sender-name">' + escapeHtml(senderLabel) + '</div>'
+                                 + '<div>' + escapeHtml(msg.content) + '</div>'
+                                 + '<div style="font-size:0.68rem;opacity:0.75;text-align:right;margin-top:3px;">' + timeLabel + '</div>';
+
                 chatMessages.appendChild(bubble);
-            });
+            }
 
             if (isNearBottom) {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        chatForm.addEventListener("submit", async (e) => {
+        chatForm.addEventListener("submit", async function(e) {
             e.preventDefault();
-            const text = messageInput.value.trim();
+            var text = messageInput.value.trim();
             if (!text) return;
 
             sendBtn.disabled = true;
             try {
-                const formData = new URLSearchParams();
-                formData.append("itemId", itemId);
-                formData.append("partnerId", partnerId);
+                var formData = new URLSearchParams();
+                formData.append("itemId", currentItemId);
+                formData.append("partnerId", currentPartnerId);
                 formData.append("message", text);
 
                 messageInput.value = "";
-                const response = await fetch("chat", {
+                var response = await fetch("chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: formData.toString()
