@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - College Lost &amp; Found</title>
+    <title>Create Student Account - Smart College Lost &amp; Found</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M10 2a8 8 0 105.293 14.707l5 5 1.414-1.414-5-5A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z'/></svg>">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -23,8 +23,15 @@
 
     <main class="container">
         <div class="form-card">
-            <h2 style="font-size: 1.4rem; color: #0f172a; margin-bottom: 6px;">Register Student Account</h2>
-            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">Your username will be public in anonymous chats. Your email remains protected.</p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="font-size: 0.75rem; font-weight: 700; background-color: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; text-transform: uppercase;">
+                    Student Registration
+                </span>
+                <h2 style="font-size: 1.5rem; color: #0f172a; margin: 8px 0 4px 0;">Join Campus Lost &amp; Found</h2>
+                <p style="font-size: 0.88rem; color: #64748b;">
+                    Pick a unique username. Your real email and contact details remain strictly confidential and safe during student chats.
+                </p>
+            </div>
 
             <% if (errorMsg != null) { %>
                 <div class="alert alert-error"><%= errorMsg %></div>
@@ -34,13 +41,15 @@
                 <input type="hidden" name="action" value="register">
 
                 <div class="form-group">
-                    <label class="form-label">Public Username (Visible to other students)</label>
-                    <input type="text" name="username" class="form-control" required placeholder="e.g. dhruv_81" pattern="[A-Za-z0-9_]{3,20}" title="Letters, numbers and underscores only (3-20 chars)">
+                    <label class="form-label">Public Username (Visible to others)</label>
+                    <input type="text" name="username" class="form-control" required placeholder="e.g. rahul_cs, tech_sam" pattern="[A-Za-z0-9_]{3,20}" title="Letters, numbers and underscores only (3-20 chars)">
+                    <span style="font-size: 0.78rem; color: #64748b; margin-top: 2px; display: block;">This handle is all other students will see in chats.</span>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">College Email Address (Kept Private)</label>
+                    <label class="form-label">College Email Address (Private)</label>
                     <input type="email" name="email" class="form-control" required placeholder="e.g. student@college.edu">
+                    <span style="font-size: 0.78rem; color: #64748b; margin-top: 2px; display: block;">Never exposed publicly or in message threads.</span>
                 </div>
 
                 <div class="form-group">
@@ -48,17 +57,19 @@
                     <input type="password" name="password" class="form-control" required placeholder="Create password" minlength="4">
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Student Account</button>
             </form>
 
-            <div style="margin-top: 16px; text-align: center; font-size: 0.9rem; color: #64748b;">
+            <div style="margin-top: 18px; text-align: center; font-size: 0.9rem; color: #64748b;">
                 Already have an account? <a href="login.jsp" style="color: #0284c7; font-weight: 600; text-decoration: none;">Login here</a>
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        <p>Smart College Lost &amp; Found Portal &bull; <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a></p>
+        <p style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">Smart College Lost &amp; Found Management System</p>
+        <p style="margin-bottom: 6px;">Designed &amp; Developed by <strong>Dhruv Choubey</strong></p>
+        <p style="font-size: 0.82rem;">Support: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a></p>
     </footer>
 
 </body>

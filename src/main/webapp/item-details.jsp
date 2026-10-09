@@ -21,6 +21,7 @@
             <a href="items" class="nav-link">Home</a>
             <% if (currentUser != null) { %>
                 <a href="post-item.jsp" class="btn btn-secondary">Report Item</a>
+                <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
                 <a href="login.jsp" class="btn btn-primary">Login</a>
@@ -42,7 +43,7 @@
                 <h1 style="font-size: 1.5rem; margin-top: 10px; color: #0f172a;"><%= item.getTitle() %></h1>
                 
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin: 16px 0; font-size: 0.92rem;">
-                    <p style="margin-bottom: 4px;"><strong>Classroom / Hall:</strong> <%= item.getClassroom() %></p>
+                    <p style="margin-bottom: 4px;"><strong>Classroom / Location:</strong> <%= item.getClassroom() %></p>
                     <p style="margin-bottom: 4px;"><strong>Category:</strong> <%= item.getCategory() %></p>
                     <p><strong>Reported By:</strong> @<%= item.getFinderUsername() %> <span style="color: #64748b; font-size: 0.82rem;">(Identity Protected)</span></p>
                 </div>
@@ -54,11 +55,11 @@
 
                 <% if (currentUser == null) { %>
                     <div class="alert alert-error">
-                        Please <a href="login.jsp" style="font-weight: 700; color: #991b1b;">Login</a> to chat with @<%= item.getFinderUsername() %> anonymously.
+                        Please <a href="login.jsp" style="font-weight: 700; color: #991b1b;">Login</a> or <a href="register.jsp" style="font-weight: 700; color: #991b1b;">Register</a> to chat with @<%= item.getFinderUsername() %> anonymously.
                     </div>
                 <% } else if (currentUser.getId() == item.getUserId()) { %>
                     <div class="alert alert-success">
-                        You reported this item. Any student claiming it can chat with you directly.
+                        You reported this notice. Any student inquiring about this item can message you directly.
                     </div>
                 <% } else { %>
                     <a href="chat?itemId=<%= item.getId() %>&partnerId=<%= item.getUserId() %>" class="btn btn-primary" style="width: 100%;">
@@ -70,7 +71,9 @@
     </main>
 
     <footer class="footer">
-        <p>Smart College Lost &amp; Found Portal &bull; Questions? Reach out at <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a></p>
+        <p style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">Smart College Lost &amp; Found Management System</p>
+        <p style="margin-bottom: 6px;">Designed &amp; Developed by <strong>Dhruv Choubey</strong></p>
+        <p style="font-size: 0.82rem;">Support: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a></p>
     </footer>
 
 </body>

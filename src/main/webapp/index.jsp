@@ -16,19 +16,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart College Lost &amp; Found</title>
+    <title>Smart College Lost &amp; Found Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M10 2a8 8 0 105.293 14.707l5 5 1.414-1.414-5-5A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z'/></svg>">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+    <!-- Header Navigation -->
     <header class="navbar">
         <a href="items" class="brand">Campus Lost &amp; Found</a>
         <nav class="nav-links">
             <a href="items" class="nav-link">Home</a>
             <% if (currentUser != null) { %>
                 <a href="post-item.jsp" class="btn btn-secondary">Report Item</a>
-                <span class="nav-link">@<%= currentUser.getUsername() %></span>
+                <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
                 <a href="login.jsp" class="nav-link">Login</a>
@@ -42,16 +43,60 @@
             <div class="alert alert-success"><%= successMsg %></div>
         <% } %>
 
-        <div style="margin-bottom: 20px;">
-            <h1 style="font-size: 1.6rem; color: #0f172a; margin-bottom: 4px;">Campus Notice Board</h1>
-            <p style="font-size: 0.95rem; color: #64748b;">Find items left behind in classrooms or post something you found.</p>
+        <!-- Engaging Academic Hero Section -->
+        <section style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 28px 24px; margin-bottom: 28px;">
+            <div style="max-width: 800px;">
+                <span style="font-size: 0.8rem; font-weight: 700; background-color: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;">
+                    Campus Community Platform
+                </span>
+                <h1 style="font-size: 1.8rem; color: #0f172a; margin: 12px 0 8px 0; font-weight: 700;">
+                    Smart College Lost &amp; Found Management System
+                </h1>
+                <p style="font-size: 1rem; color: #475569; line-height: 1.6; margin-bottom: 20px;">
+                    Left your ID card, notebook, or water bottle in a lecture hall or computer lab? Found someone else's item on a desk? 
+                    This portal helps students securely locate and return belongings across campus using <strong>anonymous identity-safe coordination</strong>.
+                </p>
+
+                <!-- 3 Feature Points -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 20px;">
+                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
+                        <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">1. Tag by Classroom</div>
+                        <p style="font-size: 0.85rem; color: #64748b;">Filter by Room Number, Lab, or Floor to find where the item was left.</p>
+                    </div>
+                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
+                        <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">2. Privacy Protected</div>
+                        <p style="font-size: 0.85rem; color: #64748b;">Your college email and phone are completely hidden. Only your username is seen.</p>
+                    </div>
+                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
+                        <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">3. Direct Student Chat</div>
+                        <p style="font-size: 0.85rem; color: #64748b;">Message the finder directly through the portal to verify details and hand over.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <% if (currentUser == null) { %>
+                        <a href="register.jsp" class="btn btn-primary" style="margin-right: 8px;">Create Account to Post</a>
+                        <a href="#noticeBoard" class="btn btn-secondary">Explore Notice Board</a>
+                    <% } else { %>
+                        <a href="post-item.jsp" class="btn btn-primary" style="margin-right: 8px;">+ Report a Found/Lost Item</a>
+                        <a href="#noticeBoard" class="btn btn-secondary">View Recent Notices</a>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Notice Board Section -->
+        <div id="noticeBoard" style="margin-bottom: 16px;">
+            <h2 style="font-size: 1.35rem; color: #0f172a; margin-bottom: 4px;">Live Notices &amp; Reports</h2>
+            <p style="font-size: 0.9rem; color: #64748b;">Search by room number, keywords, or filter by category.</p>
         </div>
 
+        <!-- Filter Form -->
         <form action="items" method="get" class="filter-bar">
-            <input type="text" name="keyword" class="filter-input" placeholder="Search item or classroom (e.g. Lab 302)..." value="<%= keyword != null ? keyword : "" %>">
+            <input type="text" name="keyword" class="filter-input" placeholder="Search item or classroom (e.g. Lab 302, Bench 4)..." value="<%= keyword != null ? keyword : "" %>">
             
             <select name="type" class="filter-select">
-                <option value="ALL" <%= "ALL".equals(selectedType) ? "selected" : "" %>>All Types</option>
+                <option value="ALL" <%= "ALL".equals(selectedType) ? "selected" : "" %>>All Types (Found &amp; Lost)</option>
                 <option value="FOUND" <%= "FOUND".equals(selectedType) ? "selected" : "" %>>Found Items</option>
                 <option value="LOST" <%= "LOST".equals(selectedType) ? "selected" : "" %>>Lost Items</option>
             </select>
@@ -70,6 +115,7 @@
             <a href="items" class="btn btn-secondary">Reset</a>
         </form>
 
+        <!-- Items Grid -->
         <div class="items-grid">
             <% if (items != null && !items.isEmpty()) {
                 for (Item item : items) { %>
@@ -78,28 +124,37 @@
                             <span class="<%= "FOUND".equals(item.getType()) ? "item-badge-found" : "item-badge-lost" %>">
                                 <%= item.getType() %>
                             </span>
-                            <h2 class="item-title"><%= item.getTitle() %></h2>
+                            <h3 class="item-title"><%= item.getTitle() %></h3>
                             <div class="item-meta">
                                 Classroom: <strong><%= item.getClassroom() %></strong> &bull; Category: <%= item.getCategory() %>
                             </div>
                             <p class="item-desc"><%= item.getDescription() %></p>
                         </div>
                         <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 0.85rem; color: #64748b;">Posted by: <strong>@<%= item.getFinderUsername() %></strong></span>
+                            <span style="font-size: 0.85rem; color: #64748b;">By: <strong>@<%= item.getFinderUsername() %></strong></span>
                             <a href="items?action=view&id=<%= item.getId() %>" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 12px;">View &amp; Claim</a>
                         </div>
                     </div>
             <%  } 
             } else { %>
                 <div style="grid-column: 1 / -1; padding: 40px; text-align: center; border: 1px dashed #cbd5e1; border-radius: 8px;">
-                    <p style="color: #64748b; font-size: 1rem;">No items currently listed matching your criteria.</p>
+                    <p style="color: #64748b; font-size: 1rem;">No notices currently posted for this search. Found something? Click "Report Item" above!</p>
                 </div>
             <% } %>
         </div>
     </main>
 
+    <!-- Professional Footer with Dhruv Choubey Credits -->
     <footer class="footer">
-        <p>Smart College Lost &amp; Found Portal &bull; Need help? Contact <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a></p>
+        <p style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">
+            Smart College Lost &amp; Found Management System
+        </p>
+        <p style="margin-bottom: 8px;">
+            Designed &amp; Developed by <strong>Dhruv Choubey</strong>
+        </p>
+        <p style="font-size: 0.82rem;">
+            Questions or suggestions? Contact: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a>
+        </p>
     </footer>
 
 </body>
