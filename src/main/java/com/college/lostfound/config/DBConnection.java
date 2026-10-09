@@ -5,16 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    // Cloud and Local environment variables support
+    // Cloud TiDB MySQL connection
     private static final String URL = System.getenv("DB_URL") != null 
         ? System.getenv("DB_URL") 
-        : "jdbc:mysql://localhost:3306/college_lost_found?useSSL=false&allowPublicKeyRetrieval=true";
+        : "jdbc:mysql://gateway01.ap-northeast-1.prod.aws.tidbcloud.com:4000/college_lost_found?sslMode=VERIFY_IDENTITY";
     private static final String USER = System.getenv("DB_USER") != null 
         ? System.getenv("DB_USER") 
-        : "root";
+        : "6hgBg6iaANQdFjs.root";
     private static final String PASS = System.getenv("DB_PASS") != null 
         ? System.getenv("DB_PASS") 
-        : "root";
+        : "31bT4jY7NeOtCova";
 
     static {
         try {
