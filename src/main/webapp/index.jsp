@@ -31,8 +31,10 @@
     <!-- Header Navigation -->
     <header class="navbar">
         <a href="items" class="brand" title="Return to Home">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            Campus Lost &amp; Found
+            <span class="brand-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
+            <span>Campus Lost &amp; Found</span>
         </a>
 
         <!-- Mobile Menu Toggle Button -->
@@ -64,42 +66,43 @@
         <% } %>
 
         <!-- Hero Section -->
-        <section style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 28px 24px; margin-bottom: 28px;">
-            <div style="max-width: 800px;">
-                <span style="font-size: 0.8rem; font-weight: 700; background-color: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;">
-                    Campus Community Platform
-                </span>
-                <h1 style="font-size: 1.8rem; color: #0f172a; margin: 12px 0 8px 0; font-weight: 700;">
+        <section class="hero-card">
+            <div>
+                <div class="hero-pill">
+                    <span class="hero-pill-dot"></span>
+                    Campus System Live &bull; Real-time Verification
+                </div>
+                <h1 class="hero-title">
                     Smart College Lost &amp; Found Management System
                 </h1>
-                <p style="font-size: 1rem; color: #475569; line-height: 1.6; margin-bottom: 20px;">
-                    Left your ID card, notebook, or bottle in a lecture hall or computer lab? Found someone else's item on a desk? 
-                    This portal helps students securely locate and return belongings across campus using <strong>anonymous identity-safe coordination</strong>.
+                <p class="hero-subtitle">
+                    Left your ID card, notebook, or earphones in a classroom? Found someone else's valuables? 
+                    This portal helps students coordinate quick, secure returns across campus using <strong>anonymous identity-safe messaging</strong>.
                 </p>
 
                 <!-- 3 Feature Points -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 20px;">
-                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
-                        <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">1. Tag by Classroom</div>
-                        <p style="font-size: 0.85rem; color: #64748b;">Filter by Room Number, Lab, or Floor to find where the item was left.</p>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <div class="feature-title">📍 1. Tag by Classroom</div>
+                        <p class="feature-text">Search and tag by Room Number, Floor, or Computer Lab to find where items were left.</p>
                     </div>
-                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
-                        <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">2. Privacy Protected</div>
-                        <p style="font-size: 0.85rem; color: #64748b;">Your college email and phone are completely hidden. Only your username is seen.</p>
+                    <div class="feature-box">
+                        <div class="feature-title">🛡️ 2. Privacy Protected</div>
+                        <p class="feature-text">Your personal email and mobile number remain private. Only your chosen handle is visible.</p>
                     </div>
-                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
-                        <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">3. Direct Student Chat</div>
-                        <p style="font-size: 0.85rem; color: #64748b;">Message the finder directly through the portal to verify details and hand over.</p>
+                    <div class="feature-box">
+                        <div class="feature-title">💬 3. Direct Peer Chat</div>
+                        <p class="feature-text">Message finder directly in real-time, share proof photos, and coordinate safe handovers.</p>
                     </div>
                 </div>
 
-                <div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <% if (currentUser == null) { %>
-                        <a href="register.jsp" class="btn btn-primary" style="margin-right: 8px;">Create Account to Post <span class="arrow-anim">&rarr;</span></a>
-                        <a href="#noticeBoard" class="btn btn-secondary">Explore Notice Board</a>
+                        <a href="register.jsp" class="btn btn-primary">Create Student Account <span class="arrow-anim">&rarr;</span></a>
+                        <a href="#noticeBoard" class="btn btn-secondary">Explore Live Board</a>
                     <% } else { %>
-                        <a href="post-item.jsp" class="btn btn-primary" style="margin-right: 8px;">+ Report a Found/Lost Item <span class="arrow-anim">&rarr;</span></a>
-                        <a href="#noticeBoard" class="btn btn-secondary">View Recent Notices</a>
+                        <a href="post-item.jsp" class="btn btn-primary">+ Report Found or Lost Item <span class="arrow-anim">&rarr;</span></a>
+                        <a href="#noticeBoard" class="btn btn-secondary">View Live Notices</a>
                     <% } %>
                 </div>
             </div>
@@ -212,25 +215,48 @@
                 </div>
             </div>
         </section>
+
+        <!-- Dedicated Campus Student Support & Helpdesk -->
+        <section class="support-card">
+            <div>
+                <div style="font-weight: 800; font-size: 1.15rem; color: #0369a1; margin-bottom: 4px;">
+                    💬 Need Help or Immediate Support?
+                </div>
+                <p style="font-size: 0.92rem; color: #334155; margin: 0;">
+                    Have questions about a lost item or need portal assistance? Contact <strong>Dhruv Choubey</strong>:
+                </p>
+            </div>
+            <div class="support-contacts">
+                <a href="tel:+919321185628" class="support-pill">
+                    <span>📞 +91 9321185628</span>
+                </a>
+                <a href="mailto:dhruvchoubey496@gmail.com" class="support-pill">
+                    <span>✉️ dhruvchoubey496@gmail.com</span>
+                </a>
+            </div>
+        </section>
     </main>
 
     <!-- Professional Footer with Dynamic Year & Dhruv Choubey Attribution -->
     <footer class="footer">
-        <p style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">
+        <p style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">
             Smart College Lost &amp; Found Management System &bull; &copy; <%= currentYear %>
         </p>
-        <p style="margin-bottom: 8px;">
-            Designed &amp; Developed by <strong>Dhruv Choubey</strong>
+        <p style="margin-bottom: 12px; color: #475569;">
+            Architectural Design &amp; Developed by <strong>Dhruv Choubey</strong>
         </p>
-        <div style="font-size: 0.85rem; margin-bottom: 8px;">
+        <div class="footer-support-box">
+            <span style="font-weight: 700; color: #0f172a;">Official Student Helpline:</span>
+            <a href="mailto:dhruvchoubey496@gmail.com">✉️ dhruvchoubey496@gmail.com</a>
+            <span>&bull;</span>
+            <a href="tel:+919321185628">📞 +91 9321185628</a>
+        </div>
+        <div style="font-size: 0.88rem; margin-top: 12px;">
             <a href="items" style="color: #0284c7; text-decoration: none; margin: 0 8px;">Home</a> &bull;
             <a href="#campusDirections" style="color: #0284c7; text-decoration: none; margin: 0 8px;">Campus Desks</a> &bull;
             <a href="#faqSection" style="color: #0284c7; text-decoration: none; margin: 0 8px;">FAQs</a> &bull;
             <a href="admin" style="color: #64748b; text-decoration: none; margin: 0 8px;">Department Desk Portal</a>
         </div>
-        <p style="font-size: 0.82rem;">
-            Questions or support? Reach out at: <a href="mailto:support-lostfound@college.edu" class="clickable-email">support-lostfound@college.edu</a>
-        </p>
     </footer>
 
     <!-- Mobile Menu Interactivity Script -->
