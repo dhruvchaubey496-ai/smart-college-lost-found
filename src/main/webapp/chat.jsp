@@ -17,6 +17,24 @@
     <title>Chat with @<%= partnerUsername %> - Campus Lost &amp; Found</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M10 2a8 8 0 105.293 14.707l5 5 1.414-1.414-5-5A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z'/></svg>">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .guidelines-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            border-bottom: 1px solid #bbf7d0;
+            padding: 12px 16px;
+            font-size: 0.86rem;
+            color: #14532d;
+        }
+        .guideline-title {
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
 </head>
 <body>
 
@@ -32,6 +50,9 @@
                 <a href="items" class="nav-link">&larr; Back to Notice Board</a>
             <% } %>
             <% if (currentUser != null) { %>
+                <% if (currentUser.isAdmin()) { %>
+                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #b45309; padding: 4px 10px; font-size: 0.8rem;">Dept Admin</a>
+                <% } %>
                 <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
             <% } %>
@@ -39,7 +60,7 @@
     </header>
 
     <main class="container">
-        <div class="chat-container">
+        <div class="chat-container" style="height: 600px;">
             <div class="chat-header">
                 <div>
                     <h3>Chat with @<%= partnerUsername %></h3>
@@ -48,6 +69,18 @@
                     <% } %>
                 </div>
                 <span style="font-size: 0.8rem; background-color: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; font-weight: 600;">Identity Protected</span>
+            </div>
+
+            <!-- Verification & Safety Guidelines Box -->
+            <div class="guidelines-box">
+                <div class="guideline-title">
+                    <span>🛡️ Verification &amp; Safety Guidelines (Kaam ki Baat):</span>
+                </div>
+                <ul style="padding-left: 18px; line-height: 1.4;">
+                    <li><strong>Ask for Hidden Proof:</strong> Ask the owner for details not visible in photos (e.g., sticker, unique scratch, last 4 digits of ID, lockscreen wallpaper).</li>
+                    <li><strong>Meet in Public Campus Spots:</strong> Coordinate handoff at Library Counter, Security Gate 1, Canteen, or Admin Block.</li>
+                    <li><strong>Zero Sensitive Data:</strong> Never share OTPs, UPI PINs, passwords, or personal phone numbers here.</li>
+                </ul>
             </div>
 
             <!-- Messages list -->
@@ -59,7 +92,7 @@
 
             <!-- Input Bar -->
             <form id="chatForm" class="chat-input-bar">
-                <input type="text" id="messageInput" class="form-control" placeholder="Type message to coordinate safely without revealing personal credentials..." required autocomplete="off">
+                <input type="text" id="messageInput" class="form-control" placeholder="Ask questions or verify item details safely..." required autocomplete="off">
                 <button type="submit" id="sendBtn" class="btn btn-primary">Send</button>
             </form>
         </div>
@@ -88,9 +121,10 @@
         }
 
         async function fetchMessages() {
-            if (!currentItemId || !currentPartnerId) return;
+            if (!currentItemId) return;
             try {
-                var res = await fetch("chat?itemId=" + currentItemId + "&partnerId=" + currentPartnerId + "&format=json");
+                var url = "chat?itemId=" + currentItemId + "&partnerId=" + currentPartnerId + "&format=json";
+                var res = await fetch(url);
                 if (res.ok) {
                     var data = await res.json();
                     renderMessages(data);
@@ -104,7 +138,7 @@
             if (!messages || messages.length === 0) {
                 chatMessages.innerHTML = '<div style="text-align:center;color:#64748b;font-size:0.9rem;padding:30px;">'
                     + 'No messages yet in this thread.<br>'
-                    + '<span style="font-size:0.82rem;color:#94a3b8;">Send a message below to start identity-safe coordination!</span>'
+                    + '<span style="font-size:0.82rem;color:#94a3b8;">Send a message below to start identity-safe verification!</span>'
                     + '</div>';
                 return;
             }

@@ -1,8 +1,10 @@
 package com.college.lostfound.controller;
 
+import com.college.lostfound.dao.ChatDAO;
 import com.college.lostfound.dao.ItemDAO;
 import com.college.lostfound.dao.UserDAO;
 import com.college.lostfound.model.Item;
+import com.college.lostfound.model.Message;
 import com.college.lostfound.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import java.util.List;
 public class AdminServlet extends HttpServlet {
     private ItemDAO itemDAO = new ItemDAO();
     private UserDAO userDAO = new UserDAO();
+    private ChatDAO chatDAO = new ChatDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,6 +74,7 @@ public class AdminServlet extends HttpServlet {
         // Metrics calculation
         List<Item> allItems = itemDAO.getAllItemsForAdmin();
         List<User> allUsers = userDAO.getAllUsers();
+        List<Message> recentMessages = chatDAO.getRecentCampusCommunications(25);
 
         int totalItems = allItems.size();
         int openItems = 0;
@@ -86,10 +90,12 @@ public class AdminServlet extends HttpServlet {
 
         req.setAttribute("allItems", allItems);
         req.setAttribute("allUsers", allUsers);
+        req.setAttribute("recentMessages", recentMessages);
         req.setAttribute("totalItems", totalItems);
         req.setAttribute("openItems", openItems);
         req.setAttribute("resolvedItems", resolvedItems);
         req.setAttribute("totalUsers", allUsers.size());
+        req.setAttribute("totalMessages", recentMessages.size());
 
         req.getRequestDispatcher("/admin.jsp").forward(req, resp);
     }

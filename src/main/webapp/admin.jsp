@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List, com.college.lostfound.model.Item, com.college.lostfound.model.User, java.time.Year" %>
+<%@ page import="java.util.List, com.college.lostfound.model.Item, com.college.lostfound.model.User, com.college.lostfound.model.Message, java.time.Year" %>
 <%
     User currentUser = (User) session.getAttribute("user");
     List<Item> allItems = (List<Item>) request.getAttribute("allItems");
     List<User> allUsers = (List<User>) request.getAttribute("allUsers");
+    List<Message> recentMessages = (List<Message>) request.getAttribute("recentMessages");
 
     int totalItems = (request.getAttribute("totalItems") != null) ? (Integer) request.getAttribute("totalItems") : 0;
     int openItems = (request.getAttribute("openItems") != null) ? (Integer) request.getAttribute("openItems") : 0;
@@ -112,7 +113,7 @@
                 </span>
                 <h1 style="font-size: 1.7rem; color: #0f172a; margin-top: 8px;">Department Administration Portal</h1>
                 <p style="font-size: 0.95rem; color: #64748b;">
-                    Full privileged control: Delete notices, broadcast official notices, manage student accounts, and resolve claims.
+                    Full privileged control: Delete notices, inspect student chat logs, broadcast official notices, and resolve claims.
                 </p>
             </div>
             <div>
@@ -248,6 +249,9 @@
                                 </td>
                                 <td>
                                     <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <a href="chat?itemId=<%= item.getId() %>&partnerId=0" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd; font-size: 0.78rem; padding: 4px 8px;" title="Inspect student chat threads for this item">
+                                            💬 Inspect Chats
+                                        </a>
                                         <% if (!"RESOLVED".equalsIgnoreCase(item.getStatus())) { %>
                                             <a href="admin?action=resolve&id=<%= item.getId() %>" class="btn btn-secondary" style="font-size: 0.78rem; padding: 4px 8px;" title="Mark as handed over to owner">Mark Resolved</a>
                                         <% } else { %>
@@ -267,7 +271,48 @@
             </table>
         </div>
 
-        <!-- Section 2: Student Directory Oversight & Ban/Delete -->
+        <!-- Section 2: Chat & Communications Oversight -->
+        <div style="margin-bottom: 12px; margin-top: 32px;">
+            <h2 style="font-size: 1.25rem; color: #0f172a;">💬 Campus Communications Oversight (Recent Chats)</h2>
+            <p style="font-size: 0.88rem; color: #64748b;">Direct transcript access to student messages to monitor dispute resolutions and prevent campus abuse.</p>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Notice ID</th>
+                        <th>Sender Student</th>
+                        <th>Message Content</th>
+                        <th>Timestamp</th>
+                        <th>Investigation Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (recentMessages != null && !recentMessages.isEmpty()) {
+                        for (Message m : recentMessages) { %>
+                            <tr>
+                                <td><strong>#<%= m.getItemId() %></strong></td>
+                                <td><strong>@<%= m.getSenderUsername() %></strong></td>
+                                <td style="max-width: 380px;"><%= m.getContent() %></td>
+                                <td style="font-size: 0.8rem; color: #64748b;"><%= m.getSentAt() %></td>
+                                <td>
+                                    <a href="chat?itemId=<%= m.getItemId() %>&partnerId=0" class="btn btn-secondary" style="font-size: 0.78rem; padding: 3px 8px;">
+                                        Open Thread &rarr;
+                                    </a>
+                                </td>
+                            </tr>
+                    <%  }
+                    } else { %>
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #64748b; padding: 24px;">No student communications logged yet.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 3: Student Directory Oversight & Ban/Delete -->
         <div style="margin-bottom: 12px; margin-top: 32px;">
             <h2 style="font-size: 1.25rem; color: #0f172a;">Student Directory Oversight (<%= allUsers != null ? allUsers.size() : 0 %>)</h2>
             <p style="font-size: 0.88rem; color: #64748b;">Direct access to student handles and emails with account ban/delete permissions.</p>

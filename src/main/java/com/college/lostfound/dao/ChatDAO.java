@@ -27,7 +27,7 @@ public class ChatDAO {
         List<Message> list = new ArrayList<>();
         String sql;
         if (user1 == user2) {
-            // Allows testing self-chat
+            // Allows testing self-chat or single user
             sql = "SELECT m.*, u.username FROM messages m JOIN users u ON m.sender_id = u.id " +
                   "WHERE m.item_id = ? AND m.sender_id = ? ORDER BY m.sent_at ASC";
         } else {
@@ -64,7 +64,60 @@ public class ChatDAO {
         return list;
     }
 
-    // Fetches all users who have sent a message regarding this item to the owner
+    // Fetches all messages for an item (Admin Oversight)
+    public List<Message> getAllMessagesForItem(int itemId) {
+        List<Message> list = new ArrayList<>();
+        String sql = "SELECT m.*, u.username FROM messages m JOIN users u ON m.sender_id = u.id " +
+                     "WHERE m.item_id = ? ORDER BY m.sent_at ASC";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, itemId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Message msg = new Message();
+                msg.setId(rs.getInt("id"));
+                msg.setItemId(rs.getInt("item_id"));
+                msg.setSenderId(rs.getInt("sender_id"));
+                msg.setReceiverId(rs.getInt("receiver_id"));
+                msg.setSenderUsername(rs.getString("username"));
+                msg.setContent(rs.getString("content"));
+                Timestamp ts = rs.getTimestamp("sent_at");
+                msg.setSentAt(ts != null ? ts.toString() : "");
+                list.add(msg);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Fetches recent communications across the entire campus for Department Desk
+    public List<Message> getRecentCampusCommunications(int limit) {
+        List<Message> list = new ArrayList<>();
+        String sql = "SELECT m.*, u.username FROM messages m JOIN users u ON m.sender_id = u.id " +
+                     "ORDER BY m.sent_at DESC LIMIT ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Message msg = new Message();
+                msg.setId(rs.getInt("id"));
+                msg.setItemId(rs.getInt("item_id"));
+                msg.setSenderId(rs.getInt("sender_id"));
+                msg.setReceiverId(rs.getInt("receiver_id"));
+                msg.setSenderUsername(rs.getString("username"));
+                msg.setContent(rs.getString("content"));
+                Timestamp ts = rs.getTimestamp("sent_at");
+                msg.setSentAt(ts != null ? ts.toString() : "");
+                list.add(msg);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<User> getChatPartnersForItem(int itemId, int ownerId) {
         List<User> list = new ArrayList<>();
         String sql = "SELECT DISTINCT u.id, u.username, u.email FROM messages m " +

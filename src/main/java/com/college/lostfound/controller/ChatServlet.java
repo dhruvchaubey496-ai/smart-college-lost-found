@@ -34,17 +34,23 @@ public class ChatServlet extends HttpServlet {
             String itemIdParam = req.getParameter("itemId");
             String partnerIdParam = req.getParameter("partnerId");
 
-            if (itemIdParam == null || partnerIdParam == null) {
+            if (itemIdParam == null) {
                 resp.sendRedirect("items");
                 return;
             }
 
             int itemId = Integer.parseInt(itemIdParam);
-            int partnerId = Integer.parseInt(partnerIdParam);
+            int partnerId = (partnerIdParam != null && !partnerIdParam.isEmpty()) ? Integer.parseInt(partnerIdParam) : 0;
             String format = req.getParameter("format");
 
             if ("json".equals(format)) {
-                List<Message> list = chatDAO.getChatHistory(itemId, currentUser.getId(), partnerId);
+                List<Message> list;
+                if (currentUser.isAdmin() && partnerId == 0) {
+                    // Admin inspecting all item communications
+                    list = chatDAO.getAllMessagesForItem(itemId);
+                } else {
+                    list = chatDAO.getChatHistory(itemId, currentUser.getId(), partnerId);
+                }
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
                 resp.getWriter().write(gson.toJson(list));
@@ -58,7 +64,7 @@ public class ChatServlet extends HttpServlet {
                 return;
             }
 
-            String partnerUsername = userDAO.getUsernameById(partnerId);
+            String partnerUsername = (partnerId > 0) ? userDAO.getUsernameById(partnerId) : "All Claimants (Admin View)";
 
             req.setAttribute("item", item);
             req.setAttribute("partnerId", partnerId);
