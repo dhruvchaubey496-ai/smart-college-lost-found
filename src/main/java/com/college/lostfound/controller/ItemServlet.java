@@ -1,5 +1,6 @@
 package com.college.lostfound.controller;
 
+import com.college.lostfound.dao.ChatDAO;
 import com.college.lostfound.dao.ItemDAO;
 import com.college.lostfound.model.Item;
 import com.college.lostfound.model.User;
@@ -12,6 +13,7 @@ import java.util.List;
 @WebServlet("/items")
 public class ItemServlet extends HttpServlet {
     private ItemDAO itemDAO = new ItemDAO();
+    private ChatDAO chatDAO = new ChatDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,6 +25,14 @@ public class ItemServlet extends HttpServlet {
                 Item item = itemDAO.getItemById(id);
                 if (item != null) {
                     req.setAttribute("item", item);
+
+                    HttpSession session = req.getSession(false);
+                    User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
+                    if (currentUser != null && currentUser.getId() == item.getUserId()) {
+                        List<User> partners = chatDAO.getChatPartnersForItem(item.getId(), currentUser.getId());
+                        req.setAttribute("chatPartners", partners);
+                    }
+
                     req.getRequestDispatcher("item-details.jsp").forward(req, resp);
                     return;
                 }

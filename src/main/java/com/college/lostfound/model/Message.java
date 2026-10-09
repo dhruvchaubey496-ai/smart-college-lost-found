@@ -1,7 +1,5 @@
 package com.college.lostfound.model;
 
-import java.sql.Timestamp;
-
 public class Message {
     private int id;
     private int itemId;
@@ -9,7 +7,7 @@ public class Message {
     private int receiverId;
     private String senderUsername;
     private String content;
-    private Timestamp sentAt;
+    private String sentAt; // Using String prevents Java 17 Gson reflection issues with Timestamp
 
     public Message() {}
 
@@ -31,6 +29,6 @@ public class Message {
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
-    public Timestamp getSentAt() { return sentAt; }
-    public void setSentAt(Timestamp sentAt) { this.sentAt = sentAt; }
+    public String getSentAt() { return sentAt; }
+    public void setSentAt(String sentAt) { this.sentAt = sentAt; }
 }
