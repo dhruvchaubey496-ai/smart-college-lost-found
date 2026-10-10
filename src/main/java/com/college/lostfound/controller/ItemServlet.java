@@ -47,6 +47,12 @@ public class ItemServlet extends HttpServlet {
         String keyword = req.getParameter("keyword");
         String category = req.getParameter("category");
         String type = req.getParameter("type");
+        String view = req.getParameter("view");
+
+        boolean isNoticesView = "notices".equalsIgnoreCase(view)
+                || (keyword != null && !keyword.trim().isEmpty())
+                || (category != null && !category.trim().isEmpty() && !"ALL".equalsIgnoreCase(category))
+                || (type != null && !type.trim().isEmpty() && !"ALL".equalsIgnoreCase(type));
 
         List<Item> items = itemDAO.getItems(keyword, category, type);
         List<Item> adminNotices = itemDAO.getOfficialAdminNotices();
@@ -55,6 +61,7 @@ public class ItemServlet extends HttpServlet {
         req.setAttribute("keyword", keyword != null ? keyword : "");
         req.setAttribute("selectedCategory", category != null ? category : "ALL");
         req.setAttribute("selectedType", type != null ? type : "ALL");
+        req.setAttribute("isNoticesView", isNoticesView);
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 
