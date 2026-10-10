@@ -31,7 +31,9 @@
         </a>
         <nav class="nav-links">
             <a href="items" class="nav-link">Home</a>
-            <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+            <% if (!user.isAdmin()) { %>
+                <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+            <% } %>
             <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= user.getUsername() %></span>
             <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
         </nav>

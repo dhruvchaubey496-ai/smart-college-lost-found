@@ -24,10 +24,40 @@ public class ItemDAO {
         }
     }
 
+    public List<Item> getOfficialAdminNotices() {
+        List<Item> list = new ArrayList<>();
+        String sql = "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id " +
+                     "WHERE i.status = 'OPEN' AND (u.username = 'admin' OR i.title LIKE '%OFFICIAL%') " +
+                     "AND i.title != 'Campus Central Admin Helpdesk' " +
+                     "ORDER BY i.created_at DESC LIMIT 6";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id"));
+                item.setTitle(rs.getString("title"));
+                item.setCategory(rs.getString("category"));
+                item.setType(rs.getString("type"));
+                item.setClassroom(rs.getString("classroom"));
+                item.setDescription(rs.getString("description"));
+                item.setUserId(rs.getInt("user_id"));
+                item.setFinderUsername(rs.getString("username"));
+                item.setStatus(rs.getString("status"));
+                item.setCreatedAt(rs.getTimestamp("created_at"));
+                list.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Item> getItems(String keyword, String category, String type) {
         List<Item> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
-            "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id WHERE i.status = 'OPEN' "
+            "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id " +
+            "WHERE i.status = 'OPEN' AND i.title != 'Campus Central Admin Helpdesk' "
         );
 
         if (keyword != null && !keyword.trim().isEmpty()) {

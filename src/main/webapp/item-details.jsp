@@ -33,7 +33,9 @@
             <a href="items" class="nav-link">Home</a>
             <% if (currentUser != null) { %>
                 <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
-                <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+                <% if (!currentUser.isAdmin()) { %>
+                    <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+                <% } %>
                 <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>

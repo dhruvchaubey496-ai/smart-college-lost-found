@@ -160,9 +160,10 @@
 
         <!-- Section: Broadcast Official Department Notice -->
         <div id="postNoticeSection" class="admin-form-panel">
-            <h3 style="font-size: 1.2rem; color: #0f172a; margin-bottom: 6px;">📢 Broadcast Official Department Notice</h3>
+            <h3 style="font-size: 1.2rem; color: #0f172a; margin-bottom: 6px;">📢 Broadcast Official Department Notice (Flashcard on Student Portal)</h3>
             <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 16px;">
-                Publish items deposited directly at Campus Security, Main Gate, or Central Reception desk.
+                Publish items or urgent alerts from Campus Security, Main Gate, or Dean's Desk. 
+                <strong style="color: #b45309;">Notices posted here appear as high-priority Flashcards on every student's homepage!</strong>
             </p>
 
             <form action="admin" method="post" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">

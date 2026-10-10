@@ -3,6 +3,7 @@
 <%
     User currentUser = (User) session.getAttribute("user");
     List<Item> items = (List<Item>) request.getAttribute("items");
+    List<Item> adminNotices = (List<Item>) request.getAttribute("adminNotices");
     String keyword = (String) request.getAttribute("keyword");
     String selectedCategory = (String) request.getAttribute("selectedCategory");
     String selectedType = (String) request.getAttribute("selectedType");
@@ -52,9 +53,10 @@
             <% if (currentUser != null) { %>
                 <% if (currentUser.isAdmin()) { %>
                     <a href="admin" class="btn" style="background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a;">Dept Admin Portal</a>
+                <% } else { %>
+                    <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
                 <% } %>
                 <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
-                <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
                 <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
@@ -106,12 +108,53 @@
                         <a href="#noticeBoard" class="btn btn-secondary">Explore Live Board</a>
                     <% } else { %>
                         <a href="post-item.jsp" class="btn btn-primary">+ Report Found or Lost Item <span class="arrow-anim">&rarr;</span></a>
-                        <a href="chat?adminSupport=true" class="btn btn-secondary">💬 Chat with Admin</a>
+                        <% if (!currentUser.isAdmin()) { %>
+                            <a href="chat?adminSupport=true" class="btn btn-secondary">💬 Chat with Admin</a>
+                        <% } else { %>
+                            <a href="admin" class="btn btn-secondary">🛡️ Dept Admin Dashboard &rarr;</a>
+                        <% } %>
                         <a href="#noticeBoard" class="btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: #475569;">View Live Notices</a>
                     <% } %>
                 </div>
             </div>
         </section>
+
+        <!-- Official Notices by Admin (Flashcard Section) -->
+        <% if (adminNotices != null && !adminNotices.isEmpty()) { %>
+            <section class="admin-flashcard-section">
+                <div class="flashcard-header">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="flashcard-pill">⚡ OFFICIAL NOTICE BY ADMIN</span>
+                        <span style="font-size: 0.92rem; color: #92400e; font-weight: 700;">Campus Security &amp; Central Administration Broadcast</span>
+                    </div>
+                    <span style="font-size: 0.8rem; color: #b45309; font-weight: 600;">Verified High Priority</span>
+                </div>
+
+                <div class="flashcard-deck">
+                    <% for (Item an : adminNotices) { %>
+                        <div class="admin-flashcard">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <span class="flashcard-tag">🏛️ <%= an.getType() %> AT SECURITY</span>
+                                    <span style="font-size: 0.74rem; color: #94a3b8; font-weight: 600;"><%= an.getCategory() %></span>
+                                </div>
+                                <h3 class="flashcard-title"><%= an.getTitle().replace("[DEPT OFFICIAL] ", "").replace("[OFFICIAL NOTICE] ", "") %></h3>
+                                <p style="font-size: 0.84rem; color: #0284c7; font-weight: 600; margin-bottom: 8px;">
+                                    📍 <%= an.getClassroom() %>
+                                </p>
+                                <p class="flashcard-body"><%= an.getDescription() %></p>
+                            </div>
+                            <div style="border-top: 1px dashed #fde68a; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.78rem; color: #78350f;">Notice by: <strong>@<%= an.getFinderUsername() %></strong></span>
+                                <a href="items?action=view&id=<%= an.getId() %>" class="btn btn-sm btn-primary" style="background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #b45309; font-size: 0.8rem;">
+                                    Claim / Inquire &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </section>
+        <% } %>
 
         <!-- Live Notice Board Section -->
         <div id="noticeBoard" style="margin-bottom: 16px;">

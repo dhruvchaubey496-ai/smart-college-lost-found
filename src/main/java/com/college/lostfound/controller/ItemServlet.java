@@ -49,7 +49,9 @@ public class ItemServlet extends HttpServlet {
         String type = req.getParameter("type");
 
         List<Item> items = itemDAO.getItems(keyword, category, type);
+        List<Item> adminNotices = itemDAO.getOfficialAdminNotices();
         req.setAttribute("items", items);
+        req.setAttribute("adminNotices", adminNotices);
         req.setAttribute("keyword", keyword != null ? keyword : "");
         req.setAttribute("selectedCategory", category != null ? category : "ALL");
         req.setAttribute("selectedType", type != null ? type : "ALL");
