@@ -36,8 +36,13 @@ public class AuthServlet extends HttpServlet {
             if (user != null) {
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
-                session.setAttribute("successMessage", "Welcome back, @" + user.getUsername() + "!");
-                resp.sendRedirect("items");
+                if (user.isAdmin()) {
+                    session.setAttribute("adminSuccess", "Welcome, Dean of Student Affairs!");
+                    resp.sendRedirect("admin");
+                } else {
+                    session.setAttribute("successMessage", "Welcome back, @" + user.getUsername() + "!");
+                    resp.sendRedirect("items");
+                }
             } else {
                 req.setAttribute("errorMessage", "Invalid Username/Email or Password. Try again.");
                 req.getRequestDispatcher("/login.jsp").forward(req, resp);

@@ -92,9 +92,11 @@
             <% } %>
             <% if (currentUser != null) { %>
                 <% if (currentUser.isAdmin()) { %>
-                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #b45309; padding: 4px 10px; font-size: 0.8rem;">Dept Admin</a>
+                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #92400e; padding: 4px 10px; font-size: 0.8rem; font-weight: 700; border: 1px solid #fde68a;">🏛️ Dean Portal</a>
+                    <span class="nav-link" style="color: #92400e; font-weight: 700;">🏛️ Dean (@admin)</span>
+                <% } else { %>
+                    <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <% } %>
-                <span class="nav-link" style="color: #0284c7; font-weight: 600;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
             <% } %>
         </nav>
@@ -105,7 +107,15 @@
             <!-- Header with Themes & Nickname Controls -->
             <div class="chat-header">
                 <div>
-                    <h3 id="chatHeaderTitle">Chat with @<%= partnerUsername %></h3>
+                    <h3 id="chatHeaderTitle">
+                        <% if ("admin".equalsIgnoreCase(partnerUsername)) { %>
+                            🏛️ Official Helpdesk &bull; Dean's Office (@admin)
+                        <% } else if (currentUser != null && currentUser.isAdmin()) { %>
+                            🏛️ Dean Desk &bull; Responding to @<%= partnerUsername %>
+                        <% } else { %>
+                            Chat with @<%= partnerUsername %>
+                        <% } %>
+                    </h3>
                     <% if (item != null) { %>
                         <span style="font-size: 0.8rem; color: #64748b;">Regarding: <%= item.getTitle() %> (<%= item.getClassroom() %>)</span>
                     <% } %>

@@ -32,11 +32,14 @@
         <nav class="nav-links">
             <a href="items" class="nav-link">Home</a>
             <% if (currentUser != null) { %>
-                <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
-                <% if (!currentUser.isAdmin()) { %>
-                    <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+                <% if (currentUser.isAdmin()) { %>
+                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700;">🏛️ Dean Portal</a>
+                    <span class="nav-link" style="color: #92400e; font-weight: 700; background: #fffbeb; padding: 4px 10px; border-radius: 6px; border: 1px solid #fde68a;">🏛️ Dean (@admin)</span>
+                <% } else { %>
+                    <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Dean Desk</a>
+                    <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
                 <% } %>
-                <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
+                <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
                 <a href="login.jsp" class="btn btn-primary">Login</a>

@@ -52,12 +52,13 @@
 
             <% if (currentUser != null) { %>
                 <% if (currentUser.isAdmin()) { %>
-                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a;">Dept Admin Portal</a>
+                    <a href="admin" class="btn" style="background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700;">🏛️ Dean Portal</a>
+                    <span class="nav-link" style="color: #92400e; font-weight: 700; background: #fffbeb; padding: 4px 10px; border-radius: 6px; border: 1px solid #fde68a;">🏛️ Dean (@admin)</span>
                 <% } else { %>
-                    <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+                    <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Dean Desk</a>
+                    <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
                 <% } %>
                 <a href="post-item.jsp" class="btn btn-secondary">+ Report Item</a>
-                <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= currentUser.getUsername() %></span>
                 <a href="auth?action=logout" class="btn btn-primary">Logout</a>
             <% } else { %>
                 <a href="login.jsp" class="nav-link">Login</a>
@@ -109,9 +110,9 @@
                     <% } else { %>
                         <a href="post-item.jsp" class="btn btn-primary">+ Report Found or Lost Item <span class="arrow-anim">&rarr;</span></a>
                         <% if (!currentUser.isAdmin()) { %>
-                            <a href="chat?adminSupport=true" class="btn btn-secondary">💬 Chat with Admin</a>
+                            <a href="chat?adminSupport=true" class="btn btn-secondary">💬 Chat with Dean Desk</a>
                         <% } else { %>
-                            <a href="admin" class="btn btn-secondary">🛡️ Dept Admin Dashboard &rarr;</a>
+                            <a href="admin" class="btn btn-secondary">🏛️ Open Dean Portal &rarr;</a>
                         <% } %>
                         <a href="#noticeBoard" class="btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: #475569;">View Live Notices</a>
                     <% } %>
@@ -119,13 +120,13 @@
             </div>
         </section>
 
-        <!-- Official Notices by Admin (Flashcard Section) -->
+        <!-- Official Notices by Dean (Flashcard Section) -->
         <% if (adminNotices != null && !adminNotices.isEmpty()) { %>
             <section class="admin-flashcard-section">
                 <div class="flashcard-header">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <span class="flashcard-pill">⚡ OFFICIAL NOTICE BY ADMIN</span>
-                        <span style="font-size: 0.92rem; color: #92400e; font-weight: 700;">Campus Security &amp; Central Administration Broadcast</span>
+                        <span class="flashcard-pill" style="background: linear-gradient(135deg, #d97706 0%, #b45309 100%);">⚡ OFFICIAL NOTICE BY DEAN</span>
+                        <span style="font-size: 0.92rem; color: #92400e; font-weight: 700;">Dean of Student Affairs &amp; Campus Authority Broadcast</span>
                     </div>
                     <span style="font-size: 0.8rem; color: #b45309; font-weight: 600;">Verified High Priority</span>
                 </div>
@@ -135,17 +136,17 @@
                         <div class="admin-flashcard">
                             <div>
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
-                                    <span class="flashcard-tag">🏛️ <%= an.getType() %> AT SECURITY</span>
+                                    <span class="flashcard-tag">🏛️ <%= an.getType() %> AT DEAN / SECURITY</span>
                                     <span style="font-size: 0.74rem; color: #94a3b8; font-weight: 600;"><%= an.getCategory() %></span>
                                 </div>
-                                <h3 class="flashcard-title"><%= an.getTitle().replace("[DEPT OFFICIAL] ", "").replace("[OFFICIAL NOTICE] ", "") %></h3>
+                                <h3 class="flashcard-title"><%= an.getTitle().replace("[DEPT OFFICIAL] ", "").replace("[OFFICIAL NOTICE] ", "").replace("[DEAN NOTICE] ", "") %></h3>
                                 <p style="font-size: 0.84rem; color: #0284c7; font-weight: 600; margin-bottom: 8px;">
                                     📍 <%= an.getClassroom() %>
                                 </p>
                                 <p class="flashcard-body"><%= an.getDescription() %></p>
                             </div>
                             <div style="border-top: 1px dashed #fde68a; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 0.78rem; color: #78350f;">Notice by: <strong>@<%= an.getFinderUsername() %></strong></span>
+                                <span style="font-size: 0.78rem; color: #78350f;">Notice by: <strong>Dean's Desk (@<%= an.getFinderUsername() %>)</strong></span>
                                 <a href="items?action=view&id=<%= an.getId() %>" class="btn btn-sm btn-primary" style="background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #b45309; font-size: 0.8rem;">
                                     Claim / Inquire &rarr;
                                 </a>

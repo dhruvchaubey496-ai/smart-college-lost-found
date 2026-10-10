@@ -31,10 +31,13 @@
         </a>
         <nav class="nav-links">
             <a href="items" class="nav-link">Home</a>
-            <% if (!user.isAdmin()) { %>
-                <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Admin</a>
+            <% if (user.isAdmin()) { %>
+                <a href="admin" class="btn" style="background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700;">🏛️ Dean Portal</a>
+                <span class="nav-link" style="color: #92400e; font-weight: 700; background: #fffbeb; padding: 4px 10px; border-radius: 6px; border: 1px solid #fde68a;">🏛️ Dean (@admin)</span>
+            <% } else { %>
+                <a href="chat?adminSupport=true" class="btn" style="background-color: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd;">💬 Contact Dean Desk</a>
+                <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= user.getUsername() %></span>
             <% } %>
-            <span class="nav-link" style="color: #0284c7; font-weight: 700;">@<%= user.getUsername() %></span>
             <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
         </nav>
     </header>

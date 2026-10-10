@@ -106,7 +106,7 @@
         </a>
         <nav class="nav-links">
             <a href="items" class="nav-link">&larr; Public Board</a>
-            <span class="nav-link" style="color: #0284c7; font-weight: 700;">Officer: @<%= currentUser.getUsername() %></span>
+            <span class="nav-link" style="color: #92400e; font-weight: 700; background: #fffbeb; padding: 4px 10px; border-radius: 6px; border: 1px solid #fde68a;">🏛️ Dean of Student Affairs (@<%= currentUser.getUsername() %>)</span>
             <a href="auth?action=logout" class="btn btn-secondary">Logout</a>
         </nav>
     </header>
@@ -115,17 +115,17 @@
         <!-- Header -->
         <div style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
             <div>
-                <span style="font-size: 0.78rem; font-weight: 700; background-color: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;">
-                    Central Security &bull; Dean of Student Affairs
+                <span style="font-size: 0.78rem; font-weight: 700; background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; border: 1px solid #fde68a;">
+                    🏛️ Official Portal &bull; Office of the Dean (Student Affairs)
                 </span>
-                <h1 style="font-size: 1.7rem; color: #0f172a; margin-top: 8px;">Department Administration Portal</h1>
+                <h1 style="font-size: 1.7rem; color: #0f172a; margin-top: 8px;">Dean's Administration &amp; Helpdesk Portal</h1>
                 <p style="font-size: 0.95rem; color: #64748b;">
-                    Full privileged control: Delete notices, inspect student chat logs, broadcast official notices, and resolve claims.
+                    Full privileged control: Broadcast Dean notices as flashcards, respond to student helpdesk chats, oversee items, and resolve claims.
                 </p>
             </div>
             <div>
-                <button onclick="document.getElementById('postNoticeSection').scrollIntoView({behavior: 'smooth'})" class="btn btn-primary">
-                    + Broadcast Official Notice
+                <button onclick="document.getElementById('postNoticeSection').scrollIntoView({behavior: 'smooth'})" class="btn btn-primary" style="background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #b45309;">
+                    + Broadcast Official Dean Notice
                 </button>
             </div>
         </div>
@@ -158,9 +158,9 @@
             </div>
         </div>
 
-        <!-- Section: Broadcast Official Department Notice -->
+        <!-- Section: Broadcast Official Dean Notice -->
         <div id="postNoticeSection" class="admin-form-panel">
-            <h3 style="font-size: 1.2rem; color: #0f172a; margin-bottom: 6px;">📢 Broadcast Official Department Notice (Flashcard on Student Portal)</h3>
+            <h3 style="font-size: 1.2rem; color: #0f172a; margin-bottom: 6px;">📢 Broadcast Official Dean Notice (Flashcard on Student Portal)</h3>
             <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 16px;">
                 Publish items or urgent alerts from Campus Security, Main Gate, or Dean's Desk. 
                 <strong style="color: #b45309;">Notices posted here appear as high-priority Flashcards on every student's homepage!</strong>
@@ -282,13 +282,13 @@
         <!-- Dedicated Student Helpdesk Inquiries Box -->
         <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: 12px; padding: 22px 24px; margin-top: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
             <div>
-                <span style="font-size: 0.74rem; font-weight: 700; background: #2563eb; color: #ffffff; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Direct Officer Line</span>
+                <span style="font-size: 0.74rem; font-weight: 700; background: #2563eb; color: #ffffff; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Dean Authority Line</span>
                 <h3 style="font-size: 1.25rem; color: #1e3a8a; margin: 6px 0 4px 0;">🎧 Student Support &amp; Helpdesk Chat Room</h3>
-                <p style="font-size: 0.9rem; color: #1e40af; margin: 0;">Students who click "Contact Admin" send messages to this official department channel.</p>
+                <p style="font-size: 0.9rem; color: #1e40af; margin: 0;">Students who click "Contact Dean Desk" send messages directly to this official channel.</p>
             </div>
             <div>
                 <a href="chat?itemId=<%= helpdeskItemId %>&partnerId=0" class="btn btn-primary" style="background: #2563eb; border-color: #1d4ed8;">
-                    Open Central Helpdesk Thread &rarr;
+                    🏛️ Open Dean Official Helpdesk Thread &rarr;
                 </a>
             </div>
         </div>
@@ -319,7 +319,7 @@
                                 <td>
                                     <strong>#<%= m.getItemId() %></strong>
                                     <% if (isHelpdesk) { %>
-                                        <span style="background-color: #dcfce7; color: #15803d; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; display: block; margin-top: 3px;">HELP DESK</span>
+                                        <span style="background-color: #dcfce7; color: #15803d; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; display: block; margin-top: 3px;">DEAN HELP DESK</span>
                                     <% } %>
                                 </td>
                                 <td><strong>@<%= m.getSenderUsername() %></strong></td>
@@ -337,7 +337,7 @@
                                 <td>
                                     <% if (isHelpdesk) { %>
                                         <a href="chat?itemId=<%= m.getItemId() %>&partnerId=<%= m.getSenderId() %>" class="btn btn-primary" style="font-size: 0.78rem; padding: 4px 10px;">
-                                            Reply to @<%= m.getSenderUsername() %> &rarr;
+                                            Reply as Dean &rarr;
                                         </a>
                                     <% } else { %>
                                         <a href="chat?itemId=<%= m.getItemId() %>&partnerId=0" class="btn btn-secondary" style="font-size: 0.78rem; padding: 3px 8px;">

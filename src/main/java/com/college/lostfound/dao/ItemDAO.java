@@ -27,8 +27,8 @@ public class ItemDAO {
     public List<Item> getOfficialAdminNotices() {
         List<Item> list = new ArrayList<>();
         String sql = "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id " +
-                     "WHERE i.status = 'OPEN' AND (u.username = 'admin' OR i.title LIKE '%OFFICIAL%') " +
-                     "AND i.title != 'Campus Central Admin Helpdesk' " +
+                     "WHERE i.status = 'OPEN' AND (u.username = 'admin' OR i.title LIKE '%OFFICIAL%' OR i.title LIKE '%DEAN%') " +
+                     "AND i.title NOT LIKE '%Helpdesk%' " +
                      "ORDER BY i.created_at DESC LIMIT 6";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -57,7 +57,7 @@ public class ItemDAO {
         List<Item> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
             "SELECT i.*, u.username FROM items i JOIN users u ON i.user_id = u.id " +
-            "WHERE i.status = 'OPEN' AND i.title != 'Campus Central Admin Helpdesk' "
+            "WHERE i.status = 'OPEN' AND i.title NOT LIKE '%Helpdesk%' "
         );
 
         if (keyword != null && !keyword.trim().isEmpty()) {
@@ -186,7 +186,7 @@ public class ItemDAO {
     }
 
     public int getOrCreateAdminHelpdeskItemId(int adminUserId) {
-        String selectSql = "SELECT id FROM items WHERE title = 'Campus Central Admin Helpdesk' AND user_id = ?";
+        String selectSql = "SELECT id FROM items WHERE (title = 'Dean & Campus Authority Helpdesk' OR title = 'Campus Central Admin Helpdesk') AND user_id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(selectSql)) {
             ps.setInt(1, adminUserId);
@@ -201,11 +201,11 @@ public class ItemDAO {
         String insertSql = "INSERT INTO items (title, category, type, classroom, description, user_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, "Campus Central Admin Helpdesk");
+            ps.setString(1, "Dean & Campus Authority Helpdesk");
             ps.setString(2, "Other");
             ps.setString(3, "FOUND");
-            ps.setString(4, "Admin Block - Gate 1 Security Desk");
-            ps.setString(5, "Official direct communication channel for student inquiries, reporting campus lost/found disputes, and reaching administration.");
+            ps.setString(4, "Dean of Student Affairs Office (Admin Block)");
+            ps.setString(5, "Official direct communication channel for student inquiries, reporting campus lost/found disputes, and reaching Dean of Student Affairs.");
             ps.setInt(6, adminUserId);
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
