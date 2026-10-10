@@ -188,12 +188,12 @@
 
                     <div class="form-group">
                         <label class="form-label" style="font-weight: 600; color: #1e293b;">Authority Username</label>
-                        <input type="text" name="identifier" class="form-control" required value="admin" style="border-color: #fde68a; background-color: #fffbeb;">
+                        <input type="text" name="identifier" class="form-control" required placeholder="Enter Dean / Authority Username" autocomplete="username">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" style="font-weight: 600; color: #1e293b;">Dean Security Password</label>
-                        <input type="password" name="password" class="form-control" required placeholder="Enter administrative password">
+                        <input type="password" name="password" class="form-control" required placeholder="Enter administrative password" autocomplete="current-password">
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #b45309; padding: 11px;">
@@ -201,15 +201,7 @@
                     </button>
                 </form>
 
-                <div style="margin-top: 20px; padding: 14px; background: #fffbeb; border: 1px dashed #fde68a; border-radius: 8px; text-align: center;">
-                    <span style="font-size: 0.76rem; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.05em;">Authorized Dean Quick Access</span>
-                    <p style="font-size: 0.82rem; color: #78350f; margin: 4px 0 10px 0;">Direct 1-Click authenticated access for Dean of Student Affairs.</p>
-                    <a href="admin?quickAuth=true" class="btn" style="background: #ffffff; border: 1px solid #d97706; color: #92400e; font-weight: 600; font-size: 0.85rem; width: 100%; display: block;">
-                        ⚡ 1-Click Authorized Dean Entry &rarr;
-                    </a>
-                </div>
-
-                <div style="margin-top: 16px; text-align: center;">
+                <div style="margin-top: 18px; text-align: center;">
                     <a href="javascript:void(0)" onclick="switchPortal('student')" style="font-size: 0.84rem; color: #0284c7; text-decoration: none; font-weight: 600;">
                         &larr; Return to Student Login
                     </a>

@@ -23,17 +23,6 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
 
-        // Auto-login helper if accessed with ?quickAuth=true for seamless demo
-        String quickAuth = req.getParameter("quickAuth");
-        if ("true".equals(quickAuth) && (currentUser == null || !currentUser.isAdmin())) {
-            User adminUser = userDAO.login("admin", "admin123");
-            if (adminUser != null) {
-                session = req.getSession(true);
-                session.setAttribute("user", adminUser);
-                currentUser = adminUser;
-            }
-        }
-
         // Ensure user has Admin privileges
         if (currentUser == null || !currentUser.isAdmin()) {
             resp.sendRedirect("login.jsp?adminRequired=true");
