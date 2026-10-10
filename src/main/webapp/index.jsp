@@ -115,49 +115,67 @@
                         </div>
                     </div>
 
-                    <!-- Right Visual Mockup Showcase -->
+                    <!-- Right Visual Showcase: Definition Image for public, Live Preview for logged in -->
                     <div class="intro-mockup-wrapper">
-                        <div class="intro-mockup-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%;"></span>
-                                    <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%;"></span>
-                                    <span style="width: 10px; height: 10px; background: #10b981; border-radius: 50%;"></span>
+                        <% if (currentUser == null) { %>
+                            <!-- High-Fidelity 3D App Definition Illustration -->
+                            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 10px; box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.12); position: relative; overflow: hidden;">
+                                <img src="assets/images/hero-lost-found.jpg" alt="Findr Smart College Lost and Found Platform" style="width: 100%; height: auto; border-radius: 12px; display: block; object-fit: cover;">
+                                <div style="position: absolute; bottom: 18px; left: 18px; right: 18px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.8); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 1.1rem;">🏛️</span>
+                                        <div>
+                                            <div style="font-size: 0.82rem; font-weight: 700; color: #0f172a;">Smart Campus Recovery Network</div>
+                                            <div style="font-size: 0.74rem; color: #64748b;">Classrooms &bull; Labs &bull; Dean's Helpdesk</div>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 0.72rem; font-weight: 700; background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 4px;">ACTIVE</span>
                                 </div>
-                                <span style="font-size: 0.75rem; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 3px 8px; border-radius: 4px;">LIVE PREVIEW</span>
                             </div>
+                        <% } else { %>
+                            <!-- Logged-in Live Activity Feed -->
+                            <div class="intro-mockup-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%;"></span>
+                                        <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%;"></span>
+                                        <span style="width: 10px; height: 10px; background: #10b981; border-radius: 50%;"></span>
+                                    </div>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 3px 8px; border-radius: 4px;">YOUR LIVE FEED (@<%= currentUser.getUsername() %>)</span>
+                                </div>
 
-                            <!-- Mockup Card 1 -->
-                            <div class="mockup-item-pill">
-                                <div>
-                                    <span class="item-badge-found" style="font-size: 0.68rem; padding: 2px 6px;">FOUND</span>
-                                    <h4 style="font-size: 0.92rem; color: #0f172a; margin-top: 4px;">Scientific Calculator (TI-84)</h4>
-                                    <span style="font-size: 0.78rem; color: #64748b;">📍 Computer Lab 302, Bench 14</span>
+                                <!-- Mockup Card 1 -->
+                                <div class="mockup-item-pill">
+                                    <div>
+                                        <span class="item-badge-found" style="font-size: 0.68rem; padding: 2px 6px;">FOUND</span>
+                                        <h4 style="font-size: 0.92rem; color: #0f172a; margin-top: 4px;">Scientific Calculator (TI-84)</h4>
+                                        <span style="font-size: 0.78rem; color: #64748b;">📍 Computer Lab 302, Bench 14</span>
+                                    </div>
+                                    <span style="font-size: 1.25rem;">📐</span>
                                 </div>
-                                <span style="font-size: 1.25rem;">📐</span>
-                            </div>
 
-                            <!-- Mockup Card 2 -->
-                            <div class="mockup-item-pill" style="border-left: 3px solid #f59e0b;">
-                                <div>
-                                    <span class="item-badge-lost" style="font-size: 0.68rem; padding: 2px 6px;">LOST</span>
-                                    <h4 style="font-size: 0.92rem; color: #0f172a; margin-top: 4px;">College ID Card &bull; Roll S 081</h4>
-                                    <span style="font-size: 0.78rem; color: #64748b;">📍 Central Library 1st Floor</span>
+                                <!-- Mockup Card 2 -->
+                                <div class="mockup-item-pill" style="border-left: 3px solid #f59e0b;">
+                                    <div>
+                                        <span class="item-badge-lost" style="font-size: 0.68rem; padding: 2px 6px;">LOST</span>
+                                        <h4 style="font-size: 0.92rem; color: #0f172a; margin-top: 4px;">College ID Card &bull; Roll S 081</h4>
+                                        <span style="font-size: 0.78rem; color: #64748b;">📍 Central Library 1st Floor</span>
+                                    </div>
+                                    <span style="font-size: 1.25rem;">🪪</span>
                                 </div>
-                                <span style="font-size: 1.25rem;">🪪</span>
-                            </div>
 
-                            <!-- Simulated Real-time Verification Chat Bubble -->
-                            <div class="mockup-chat-bubble">
-                                <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; margin-bottom: 4px;">
-                                    <span>💬 Identity-Safe Peer Chat</span>
-                                    <span style="font-size: 0.7rem; color: #15803d; background: #dcfce7; padding: 1px 6px; border-radius: 3px;">VERIFIED</span>
+                                <!-- Simulated Real-time Verification Chat Bubble -->
+                                <div class="mockup-chat-bubble">
+                                    <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; margin-bottom: 4px;">
+                                        <span>💬 Identity-Safe Peer Chat</span>
+                                        <span style="font-size: 0.7rem; color: #15803d; background: #dcfce7; padding: 1px 6px; border-radius: 3px;">ACTIVE SESSION</span>
+                                    </div>
+                                    <p style="font-size: 0.8rem; margin: 0; line-height: 1.4;">
+                                        Logged in as <strong>@<%= currentUser.getUsername() %></strong> &bull; <a href="items?view=notices" style="color: #15803d; font-weight: 700;">Explore Notices &rarr;</a>
+                                    </p>
                                 </div>
-                                <p style="font-size: 0.8rem; margin: 0; line-height: 1.4;">
-                                    <strong>@rahul_cs:</strong> "Uploaded photo of the sticker on back 📷. Deposited at Dean Office!"
-                                </p>
                             </div>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
             </section>
